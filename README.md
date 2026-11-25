@@ -62,8 +62,8 @@ flowchart LR
         direction TB
         BR["🔁 server/bridge.py<br/>WebSocket relay"]:::step --> WEB["🖥️ Operator website"]:::web
     end
-    LLAMA == "results + advice<br/>USB / Wi-Fi" ==> BR
-    WEB -. "inspect, thresholds,<br/>golden board" .-> CAM
+    PHONE == "results + advice · USB / Wi-Fi" ==> LAPTOP
+    LAPTOP -. "inspect · thresholds · golden board" .-> PHONE
 
     classDef input fill:#E8F1FB,stroke:#1F4E8C,color:#0B2545
     classDef gate fill:#EDE4FF,stroke:#5B3FA8,color:#2B1A47
