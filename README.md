@@ -19,19 +19,18 @@ A laptop only shows the operator website.
 
 ```mermaid
 flowchart TD
-    A["📷 Board under the phone<br/>camera photo or stored image"]:::input
-    A --> B{"Board check<br/>Is there a circuit board?<br/>YOLO backbone + head · 320 px · ~130 ms"}:::gate
-    B -- "No board (score below 0.70)" --> NB["⛔ NO BOARD<br/>ask the operator to place the board"]:::stop
-    B -- "Board found" --> Q["Photo quality check<br/>blur · brightness · glare"]:::step
-    Q --> C["YOLO11n defect detection<br/>FP16 · ExecuTorch + XNNPACK<br/>640 px tiles · ~130 ms per tile"]:::ai
-    C --> G["Golden-board check (optional)<br/>hides features also seen on a known-good board"]:::step
-    G --> R{"Rules: worst severity"}:::rule
-    R -- "critical defect" --> RJ["🔴 REJECT"]:::reject
-    R -- "only repairable" --> RW["🟠 REWORK"]:::rework
-    R -- "no defects" --> PS["🟢 PASS"]:::pass
-    RJ --> L["Llama 3.2 1B Instruct · 8da4w · ExecuTorch<br/>fix steps + likely cause<br/>checked against the repair guide"]:::llm
+    A(["📷 Photo of the board"]):::input --> B(["🔍 Board check · is there a PCB? · 130 ms"]):::gate
+    B -- "no (score < 0.70)" --> NB["⛔ NO BOARD"]:::stop
+    B -- "yes" --> Q["📏 Photo quality · blur, light, glare"]:::step
+    Q --> C["🧠 YOLO11n defect detection · ExecuTorch FP16 · 130 ms per tile"]:::ai
+    C --> G["🟡 Golden board · hide design features"]:::step
+    G --> R{"Worst defect?"}:::rule
+    R -- "critical" --> RJ["🔴 REJECT"]:::reject
+    R -- "repairable" --> RW["🟠 REWORK"]:::rework
+    R -- "none" --> PS["🟢 PASS"]:::pass
+    RJ --> L["🦙 Llama 3.2 1B · ExecuTorch 8da4w · fix steps + cause"]:::llm
     RW --> L
-    L --> W["🖥️ Operator website on the laptop<br/>live view · advice · Arm performance · Pareto chart · hash-chained log"]:::web
+    L --> W[["🖥️ Operator website · advice, Arm stats, Pareto, tamper-proof log"]]:::web
     PS --> W
     NB --> W
 
@@ -52,21 +51,19 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    subgraph PHONE["📱 Phone · Arm CPU only · offline"]
+    subgraph PHONE["📱 Phone · Arm CPU only · ExecuTorch + XNNPACK · offline"]
         direction TB
-        CAM["Camera"]:::input --> GATE["Board check<br/>pcb_gate_v5.pte"]:::gate
-        GATE --> YOLO["YOLO11n v3<br/>pcb_yolo11n_v3_fp16.pte"]:::ai
-        YOLO --> RULES["Rules + golden board"]:::rule
-        RULES --> LLAMA["Llama 3.2 1B<br/>llama1b_8da4w.pte"]:::llm
-        ET[["ExecuTorch runtime + XNNPACK<br/>2 threads · patched thread count · prefix KV cache"]]:::et
+        CAM["📷 Camera"]:::input --> GATE["🔍 Board check<br/>pcb_gate_v5.pte"]:::gate
+        GATE --> YOLO["🧠 YOLO11n v3<br/>pcb_yolo11n_v3_fp16.pte"]:::ai
+        YOLO --> RULES["⚖️ Rules + golden board"]:::rule
+        RULES --> LLAMA["🦙 Llama 3.2 1B<br/>llama1b_8da4w.pte"]:::llm
     end
     subgraph LAPTOP["💻 Laptop · no AI"]
         direction TB
-        BR["server/bridge.py<br/>WebSocket relay"]:::step --> WEB["web/ operator console"]:::web
+        BR["🔁 server/bridge.py<br/>WebSocket relay"]:::step --> WEB["🖥️ Operator website"]:::web
     end
-    LLAMA -- "results, photo, advice<br/>USB or Wi-Fi" --> BR
-    WEB -- "commands: inspect, thresholds, golden board" --> BR
-    BR -.-> CAM
+    LLAMA == "results + advice<br/>USB / Wi-Fi" ==> BR
+    WEB -. "inspect, thresholds,<br/>golden board" .-> CAM
 
     classDef input fill:#E8F1FB,stroke:#1F4E8C,color:#0B2545
     classDef gate fill:#EDE4FF,stroke:#5B3FA8,color:#2B1A47
@@ -74,86 +71,7 @@ flowchart LR
     classDef llm fill:#FFF0D6,stroke:#C77700,color:#4A2C00
     classDef rule fill:#FFFFFF,stroke:#1A1A1A,color:#1A1A1A
     classDef step fill:#F3F1EA,stroke:#8A8678,color:#1A1A1A
-    classDef et fill:#1A1A1A,stroke:#1A1A1A,color:#FFFFFF
     classDef web fill:#0B4D40,stroke:#0B4D40,color:#FFFFFF
-```
-
-## What it does
-
-| | |
-|---|---|
-| **Defects** | missing hole, mouse bite, open circuit, short, spur, spurious copper, missing pad |
-| **Verdict** | rule-based from defect severity (never from the LLM): any critical → REJECT, only repairable → REWORK, none → PASS |
-| **Advice** | Llama 3.2 1B writes the fix steps and likely cause. Each reply is checked against a repair guide (SOP), with a rule-based fallback |
-| **Trust** | board check (a desk or room is "No board", never PASS), calibrated confidence, photo-quality check, golden reference board |
-| **Traceability** | board ID from a QR sticker, a log protected by a SHA-256 hash chain, CSV export, Pareto chart of defect types |
-
-## Arm / ExecuTorch work
-
-- **YOLO11n → ExecuTorch FP16 with the XNNPACK delegate** (`ml/export_v3.py`, 10 MB). The `.pte` matches PyTorch on held-out boards (P 0.880 / R 0.748 vs 0.880 / 0.752).
-- **Llama 3.2 1B Instruct → ExecuTorch 8da4w** (8-bit dynamic activations, 4-bit weights, XNNPACK, KV cache).
-- **ExecuTorch runtime patch** (`android/executorch_android/boardcheck-threads.patch`, rebuilt `libexecutorch.so`). On a chip with only 2 big cores, the stock runtime left Llama one thread. The patch lets the app set the thread count. The app also keeps a **prefix KV cache**: the fixed system prompt is prefilled once, and each board only prefills its own findings.
-- **Thread counts measured on the phone** (`ml/results/phone/yolo_bench.json`, `llama_threads*.json`): 2 threads is best for this 2 + 6 core chip. For example, the FP32 YOLO takes 192 ms/tile with 2 threads and 313 ms/tile with 6.
-- **Arm Performance Studio / Streamline profile** ([`profiling/FINDINGS.md`](profiling/FINDINGS.md)). The app labels every stage in Streamline's timeline through Arm's annotation library (`android/native/annotate`). Findings: 27–42 % of inference cycles ran on the A510 cores (IPC ≈ 0.7–0.9 vs 2.3–2.9 on the A715). Llama decode is memory-bound (42 % back-end stalls). Thermal throttling is the biggest factor on this phone. A big-core pinning option (`Affinity.kt`) is built in, and its benefit still has to be measured on a cool phone.
-
-## Results
-
-### Defect detection (YOLO11n v3, held-out data)
-
-| Test set | Boards | Precision | Recall | Old model (P / R) |
-|---|---|---|---|---|
-| DefectDet (real photos, green) | held-out half | **0.86** | **0.77** | 0.00 / 0.00 |
-| PCB-Defect v2 (real photos, yellow) | held-out designs | **0.87** | 0.54 | – / 0.00 |
-| DeepPCB (scans) | full test set | 0.89 | **0.91** | 0.05 / 0.00 |
-| DsPCBSD+ | full test set | 0.83 | 0.54 | 0.00 / 0.00 |
-| PKU-Market-PCB | held-out half | 0.72 | **0.95** | 0.81 / 0.94 |
-
-Thresholds per class are tuned on one half and reported on the other half (`ml/results/phaseB_final.json`).
-On PKU, most false alarms are trace junctions read as "short". The **golden board** check cuts them from
-140 to 61 at recall 0.95 → 0.935 (`ml/golden_eval.py`, `ml/results/golden_eval.json`).
-
-**Confidence calibration** (isotonic, 238 boards, 2 339 detections): average gap between stated and real accuracy
-0.164 → **0.031** (`ml/calibrate_v3.py`, `web/js/calibration.json`).
-
-### Board check ("is there a circuit board?")
-
-| Held-out test | Result |
-|---|---|
-| Room video frames + a room photo that used to PASS | **45 / 45 rejected** (highest score 0.18; a PASS needs ≥ 0.70) |
-| Real phone board frames | 17 / 17 accepted |
-| DefectDet green boards / green-board video | 44 / 44 · 37 / 37 accepted |
-| PCB-Defect yellow boards | 38 / 42 accepted |
-| On the phone (`results/phone/v5_gate_phone.json`) | room → NO BOARD (0.27); 8 / 8 test boards accepted (0.95–1.00) |
-
-### Speed on the phone (MT6886, CPU only)
-
-| Stage | Time |
-|---|---|
-| Board check | ~130 ms |
-| YOLO11n per 640 px tile (FP16, 2 threads) | ~130 ms cool · 180–290 ms when the phone throttles |
-| Verdict for a full photo (12–16 tiles) | ~2.2 s |
-| Llama prefill, board findings (~160 tokens, prefix cached) | 46–55 tok/s |
-| Llama decode | 8.5–11 tok/s |
-
-## Repository
-
-| Path | What it is |
-|---|---|
-| `android/app/` | Android app (Kotlin): camera, `Detector.kt`, `PcbGate.kt`, `Golden.kt`, `Advisor.kt` / `QcAdvisor.kt` (Llama + SOP), `Annotate.kt` / `Affinity.kt` (Streamline labels, big-core pinning) |
-| `android/executorch_android/` | ExecuTorch Android library with the thread-count patch and the rebuilt `libexecutorch.so` |
-| `android/native/annotate/` | JNI wrapper around Arm's Streamline annotation library (`build.sh` builds `libbcannotate.so`) |
-| `server/bridge.py` | Serves the website and relays phone ↔ website over WebSocket (no AI on the laptop) |
-| `web/` | Operator console: Inspect (live view, Llama chat, Arm performance strip), Log (Pareto chart, hash-chained log, CSV), Settings (thresholds, golden board, confidence) |
-| `ml/` | Training and evaluation: `train_v2.py`, `augment.py` (phone-look augmentation), `train_gate.py`, `eval_v2.py`, `golden_eval.py`, `calibrate_v3.py`, `export_v3.py`, phone test harnesses |
-| `ml/data_prep/` | Builds the merged dataset (PKU + DeepPCB + DsPCBSD+ + PCB-Defect v2 + DefectDet), crops real boards from video, mines hard negatives |
-| `ml/models/` | Final models: `pcb_yolo11n_v3_fp16.pte`, `pcb_gate_v5.pte` |
-| `ml/runs/pcb_yolo11n_v3/` | Final training run: metrics, curves, `best.pt` |
-| `ml/results/` | Every evaluation, calibration and phone test as JSON |
-| `profiling/` | Streamline capture / analysis scripts, counter config, findings |
-
-## Run it
-
-**Website (laptop)**
 ```bash
 pip install websockets
 python3 server/bridge.py          # then open http://localhost:8000
