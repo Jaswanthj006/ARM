@@ -1,0 +1,59 @@
+{
+ "images": {
+  "train": {
+   "pku": 4747,
+   "deeppcb": 4000,
+   "dspcbsd": 4126
+  },
+  "val_pku": {
+   "pku": 1504
+  },
+  "val_deeppcb": {
+   "deeppcb": 2000
+  },
+  "val_dspcbsd": {
+   "dspcbsd": 993
+  },
+  "skipped": {
+   "dspcbsd_other_defect_class": 5140
+  },
+  "erased": {
+   "deeppcb_pin_hole": 1501
+  },
+  "moved": {
+   "dspcbsd_val_near_duplicates_to_train": 0
+  }
+ },
+ "boxes": {
+  "train": {
+   "spur": 5086,
+   "spurious_copper": 2922,
+   "mouse_bite": 3876,
+   "open_circuit": 3309,
+   "short": 2448,
+   "missing_hole": 685
+  },
+  "val_pku": {
+   "spurious_copper": 252,
+   "short": 234,
+   "missing_hole": 242,
+   "spur": 224,
+   "open_circuit": 254,
+   "mouse_bite": 251
+  },
+  "val_deeppcb": {
+   "open_circuit": 771,
+   "short": 542,
+   "spurious_copper": 543,
+   "mouse_bite": 700,
+   "spur": 551
+  },
+  "val_dspcbsd": {
+   "spur": 811,
+   "spurious_copper": 230,
+   "mouse_bite": 410,
+   "short": 134,
+   "open_circuit": 265
+  }
+ }
+}

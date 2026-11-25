@@ -1,0 +1,76 @@
+collecting detections on 152 held-out boards …
+  0/152 boards
+  20/152 boards
+  40/152 boards
+  60/152 boards
+  80/152 boards
+  100/152 boards
+  120/152 boards
+  140/152 boards
+{
+ "boards": 152,
+ "detections": 1123,
+ "min_score": 0.2,
+ "max_side": 1920,
+ "calibration_error_raw_score": 0.115,
+ "calibration_error_calibrated": 0.029,
+ "reliability_held_out_half": [
+  {
+   "stated": "0-50%",
+   "detections": 353,
+   "avg_stated": 0.112,
+   "actually_correct": 0.122
+  },
+  {
+   "stated": "50-70%",
+   "detections": 30,
+   "avg_stated": 0.594,
+   "actually_correct": 0.733
+  },
+  {
+   "stated": "70-80%",
+   "detections": 39,
+   "avg_stated": 0.761,
+   "actually_correct": 0.872
+  },
+  {
+   "stated": "80-90%",
+   "detections": 165,
+   "avg_stated": 0.849,
+   "actually_correct": 0.867
+  },
+  {
+   "stated": "90-100%",
+   "detections": 536,
+   "avg_stated": 0.957,
+   "actually_correct": 0.924
+  }
+ ],
+ "per_type": {
+  "missing_hole": {
+   "detections": 135,
+   "correct": 119
+  },
+  "mouse_bite": {
+   "detections": 130,
+   "correct": 122
+  },
+  "open_circuit": {
+   "detections": 151,
+   "correct": 128
+  },
+  "short": {
+   "detections": 144,
+   "correct": 117
+  },
+  "spur": {
+   "detections": 413,
+   "correct": 123
+  },
+  "spurious_copper": {
+   "detections": 150,
+   "correct": 128
+  }
+ },
+ "note": "Calibrated on PKU held-out boards 10-12 (dataset photos). Real phone-camera photos may differ; re-calibrate on real captures."
+}

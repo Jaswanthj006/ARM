@@ -1,0 +1,446 @@
+{
+ "chosen_model": "runs/pcb_yolo11n_v2_aws/weights/best.pt (epoch 11)",
+ "interim_thresholds": {
+  "missing_hole": 0.55,
+  "mouse_bite": 0.65,
+  "open_circuit": 0.35,
+  "short": 0.5,
+  "spur": 0.5,
+  "spurious_copper": 0.6
+ },
+ "why": "short 0.5: T/H trace junctions are detected as shorts at 0.40-0.55 (design features, not defects); spurious_copper 0.6: 0 false alarms on the green board; others tuned on PKU half A",
+ "compare": {
+  "old_app": {
+   "pku_half_B": {
+    "P": 0.807,
+    "R": 0.94,
+    "found": 359,
+    "missed": 23,
+    "false": 86,
+    "images": 76,
+    "images_flagged": 76,
+    "per_class": {
+     "missing_hole": {
+      "P": 0.887,
+      "R": 0.917,
+      "found": 55,
+      "missed": 5,
+      "false": 7
+     },
+     "mouse_bite": {
+      "P": 0.955,
+      "R": 0.969,
+      "found": 63,
+      "missed": 2,
+      "false": 3
+     },
+     "open_circuit": {
+      "P": 0.861,
+      "R": 0.939,
+      "found": 62,
+      "missed": 4,
+      "false": 10
+     },
+     "short": {
+      "P": 0.54,
+      "R": 0.885,
+      "found": 54,
+      "missed": 7,
+      "false": 46
+     },
+     "spur": {
+      "P": 0.81,
+      "R": 0.985,
+      "found": 64,
+      "missed": 1,
+      "false": 15
+     },
+     "spurious_copper": {
+      "P": 0.924,
+      "R": 0.938,
+      "found": 61,
+      "missed": 4,
+      "false": 5
+     }
+    }
+   },
+   "pku_all": {
+    "P": 0.809,
+    "R": 0.938,
+    "found": 720,
+    "missed": 48,
+    "false": 170,
+    "images": 152,
+    "images_flagged": 152,
+    "per_class": {
+     "missing_hole": {
+      "P": 0.907,
+      "R": 0.921,
+      "found": 117,
+      "missed": 10,
+      "false": 12
+     },
+     "mouse_bite": {
+      "P": 0.931,
+      "R": 0.96,
+      "found": 121,
+      "missed": 5,
+      "false": 9
+     },
+     "open_circuit": {
+      "P": 0.901,
+      "R": 0.969,
+      "found": 127,
+      "missed": 4,
+      "false": 14
+     },
+     "short": {
+      "P": 0.554,
+      "R": 0.897,
+      "found": 113,
+      "missed": 13,
+      "false": 91
+     },
+     "spur": {
+      "P": 0.792,
+      "R": 0.968,
+      "found": 122,
+      "missed": 4,
+      "false": 32
+     },
+     "spurious_copper": {
+      "P": 0.909,
+      "R": 0.909,
+      "found": 120,
+      "missed": 12,
+      "false": 12
+     }
+    }
+   },
+   "deeppcb": {
+    "P": 0.049,
+    "R": 0.004,
+    "found": 11,
+    "missed": 3096,
+    "false": 213,
+    "images": 2000,
+    "images_flagged": 106,
+    "per_class": {
+     "missing_hole": {
+      "P": 0.0,
+      "R": null,
+      "found": 0,
+      "missed": 0,
+      "false": 92
+     },
+     "mouse_bite": {
+      "P": null,
+      "R": 0.0,
+      "found": 0,
+      "missed": 700,
+      "false": 0
+     },
+     "open_circuit": {
+      "P": 0.5,
+      "R": 0.008,
+      "found": 6,
+      "missed": 765,
+      "false": 6
+     },
+     "short": {
+      "P": 0.333,
+      "R": 0.007,
+      "found": 4,
+      "missed": 538,
+      "false": 8
+     },
+     "spur": {
+      "P": 0.01,
+      "R": 0.002,
+      "found": 1,
+      "missed": 550,
+      "false": 101
+     },
+     "spurious_copper": {
+      "P": 0.0,
+      "R": 0.0,
+      "found": 0,
+      "missed": 543,
+      "false": 6
+     }
+    }
+   },
+   "dspcbsd": {
+    "P": 0.0,
+    "R": 0.0,
+    "found": 0,
+    "missed": 1850,
+    "false": 57,
+    "images": 993,
+    "images_flagged": 35,
+    "per_class": {
+     "missing_hole": {
+      "P": 0.0,
+      "R": null,
+      "found": 0,
+      "missed": 0,
+      "false": 57
+     },
+     "mouse_bite": {
+      "P": null,
+      "R": 0.0,
+      "found": 0,
+      "missed": 410,
+      "false": 0
+     },
+     "open_circuit": {
+      "P": null,
+      "R": 0.0,
+      "found": 0,
+      "missed": 265,
+      "false": 0
+     },
+     "short": {
+      "P": null,
+      "R": 0.0,
+      "found": 0,
+      "missed": 134,
+      "false": 0
+     },
+     "spur": {
+      "P": null,
+      "R": 0.0,
+      "found": 0,
+      "missed": 811,
+      "false": 0
+     },
+     "spurious_copper": {
+      "P": null,
+      "R": 0.0,
+      "found": 0,
+      "missed": 230,
+      "false": 0
+     }
+    }
+   },
+   "green_flagged": 0,
+   "phone_flagged": 0
+  },
+  "new_e11_interim": {
+   "pku_half_B": {
+    "P": 0.861,
+    "R": 0.94,
+    "found": 359,
+    "missed": 23,
+    "false": 58,
+    "images": 76,
+    "images_flagged": 76,
+    "per_class": {
+     "missing_hole": {
+      "P": 0.915,
+      "R": 0.9,
+      "found": 54,
+      "missed": 6,
+      "false": 5
+     },
+     "mouse_bite": {
+      "P": 0.985,
+      "R": 0.985,
+      "found": 64,
+      "missed": 1,
+      "false": 1
+     },
+     "open_circuit": {
+      "P": 0.971,
+      "R": 1.0,
+      "found": 66,
+      "missed": 0,
+      "false": 2
+     },
+     "short": {
+      "P": 0.582,
+      "R": 0.869,
+      "found": 53,
+      "missed": 8,
+      "false": 38
+     },
+     "spur": {
+      "P": 0.897,
+      "R": 0.938,
+      "found": 61,
+      "missed": 4,
+      "false": 7
+     },
+     "spurious_copper": {
+      "P": 0.924,
+      "R": 0.938,
+      "found": 61,
+      "missed": 4,
+      "false": 5
+     }
+    }
+   },
+   "pku_all": {
+    "P": 0.863,
+    "R": 0.938,
+    "found": 720,
+    "missed": 48,
+    "false": 114,
+    "images": 152,
+    "images_flagged": 152,
+    "per_class": {
+     "missing_hole": {
+      "P": 0.943,
+      "R": 0.906,
+      "found": 115,
+      "missed": 12,
+      "false": 7
+     },
+     "mouse_bite": {
+      "P": 0.96,
+      "R": 0.96,
+      "found": 121,
+      "missed": 5,
+      "false": 5
+     },
+     "open_circuit": {
+      "P": 0.978,
+      "R": 1.0,
+      "found": 131,
+      "missed": 0,
+      "false": 3
+     },
+     "short": {
+      "P": 0.588,
+      "R": 0.849,
+      "found": 107,
+      "missed": 19,
+      "false": 75
+     },
+     "spur": {
+      "P": 0.887,
+      "R": 0.937,
+      "found": 118,
+      "missed": 8,
+      "false": 15
+     },
+     "spurious_copper": {
+      "P": 0.934,
+      "R": 0.97,
+      "found": 128,
+      "missed": 4,
+      "false": 9
+     }
+    }
+   },
+   "deeppcb": {
+    "P": 0.893,
+    "R": 0.807,
+    "found": 2506,
+    "missed": 601,
+    "false": 300,
+    "images": 2000,
+    "images_flagged": 1485,
+    "per_class": {
+     "missing_hole": {
+      "P": null,
+      "R": null,
+      "found": 0,
+      "missed": 0,
+      "false": 0
+     },
+     "mouse_bite": {
+      "P": 0.973,
+      "R": 0.716,
+      "found": 501,
+      "missed": 199,
+      "false": 14
+     },
+     "open_circuit": {
+      "P": 0.803,
+      "R": 0.899,
+      "found": 693,
+      "missed": 78,
+      "false": 170
+     },
+     "short": {
+      "P": 0.89,
+      "R": 0.613,
+      "found": 332,
+      "missed": 210,
+      "false": 41
+     },
+     "spur": {
+      "P": 0.912,
+      "R": 0.866,
+      "found": 477,
+      "missed": 74,
+      "false": 46
+     },
+     "spurious_copper": {
+      "P": 0.945,
+      "R": 0.926,
+      "found": 503,
+      "missed": 40,
+      "false": 29
+     }
+    }
+   },
+   "dspcbsd": {
+    "P": 0.846,
+    "R": 0.208,
+    "found": 385,
+    "missed": 1465,
+    "false": 70,
+    "images": 993,
+    "images_flagged": 371,
+    "per_class": {
+     "missing_hole": {
+      "P": null,
+      "R": null,
+      "found": 0,
+      "missed": 0,
+      "false": 0
+     },
+     "mouse_bite": {
+      "P": 1.0,
+      "R": 0.037,
+      "found": 15,
+      "missed": 395,
+      "false": 0
+     },
+     "open_circuit": {
+      "P": 0.768,
+      "R": 0.687,
+      "found": 182,
+      "missed": 83,
+      "false": 55
+     },
+     "short": {
+      "P": 0.917,
+      "R": 0.328,
+      "found": 44,
+      "missed": 90,
+      "false": 4
+     },
+     "spur": {
+      "P": 0.903,
+      "R": 0.104,
+      "found": 84,
+      "missed": 727,
+      "false": 9
+     },
+     "spurious_copper": {
+      "P": 0.968,
+      "R": 0.261,
+      "found": 60,
+      "missed": 170,
+      "false": 2
+     }
+    }
+   },
+   "green_flagged": 0,
+   "phone_flagged": 0
+  }
+ }
+}

@@ -1,0 +1,4100 @@
+{
+ "note": "Phase 3: compare detector versions on every test set we have.\n\nModels (name=path) are run once per image at a low score (0.05); everything else is computed from\nthe cached detections, so thresholds can be tuned without re-running the models.\n\nTest sets\n  pku_boards  PKU boards 10-12, whole boards tiled like the app (152 boards, 768 defects)\n  deeppcb     DeepPCB test split, 2000 tiles   (unseen by the old model's training AND by v2's)\n  dspcbsd     DsPCBSD+ test split, 993 tiles\n  green       real clean board, handheld phone video (37 crops; never used in training)\n  phone       real clean board frames from the phone app (82 frames, 480x640)\n\nMatching: same class and IoU >= 0.5 (also reported at IoU >= 0.3, because PKU boxes are drawn\nloosely and DsPCBSD+/DeepPCB boxes tightly, so a correct but tighter box can fall below 0.5).\n\nThreshold tuning: PKU boards are split by board name into two halves (alternate images).\nPer-class thresholds are tuned on half A (max F1; for the critical defects open_circuit and short\nthe threshold is lowered until recall >= 0.95 if possible) and reported on half B only.",
+ "models": {
+  "old": "ml/runs/pcb_yolo11n/weights/best.pt",
+  "new_e11": "ml/runs/pcb_yolo11n_v2_aws/weights/best.pt",
+  "v3": "ml/runs/pcb_yolo11n_v3/weights/best.pt"
+ },
+ "app_thresholds": {
+  "missing_hole": 0.4,
+  "mouse_bite": 0.4,
+  "open_circuit": 0.4,
+  "short": 0.25,
+  "spur": 0.4,
+  "spurious_copper": 0.4,
+  "missing_pad": 0.4
+ },
+ "results": {
+  "old": {
+   "tuned_thresholds_on_pku_half_A": {
+    "missing_hole": 0.55,
+    "mouse_bite": 0.4,
+    "open_circuit": 0.6,
+    "short": 0.3,
+    "spur": 0.5,
+    "spurious_copper": 0.1,
+    "missing_pad": 0.1
+   },
+   "app": {
+    "pku_boards_all": {
+     "P": 0.809,
+     "R": 0.938,
+     "found": 720,
+     "missed": 48,
+     "false": 170,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.907,
+       "R": 0.921,
+       "found": 117,
+       "missed": 10,
+       "false": 12
+      },
+      "mouse_bite": {
+       "P": 0.931,
+       "R": 0.96,
+       "found": 121,
+       "missed": 5,
+       "false": 9
+      },
+      "open_circuit": {
+       "P": 0.901,
+       "R": 0.969,
+       "found": 127,
+       "missed": 4,
+       "false": 14
+      },
+      "short": {
+       "P": 0.554,
+       "R": 0.897,
+       "found": 113,
+       "missed": 13,
+       "false": 91
+      },
+      "spur": {
+       "P": 0.792,
+       "R": 0.968,
+       "found": 122,
+       "missed": 4,
+       "false": 32
+      },
+      "spurious_copper": {
+       "P": 0.909,
+       "R": 0.909,
+       "found": 120,
+       "missed": 12,
+       "false": 12
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_all_iou0.3": {
+     "P": 0.845,
+     "R": 0.979,
+     "found": 752,
+     "missed": 16,
+     "false": 138,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.953,
+       "R": 0.969,
+       "found": 123,
+       "missed": 4,
+       "false": 6
+      },
+      "mouse_bite": {
+       "P": 0.962,
+       "R": 0.992,
+       "found": 125,
+       "missed": 1,
+       "false": 5
+      },
+      "open_circuit": {
+       "P": 0.922,
+       "R": 0.992,
+       "found": 130,
+       "missed": 1,
+       "false": 11
+      },
+      "short": {
+       "P": 0.618,
+       "R": 1.0,
+       "found": 126,
+       "missed": 0,
+       "false": 78
+      },
+      "spur": {
+       "P": 0.812,
+       "R": 0.992,
+       "found": 125,
+       "missed": 1,
+       "false": 29
+      },
+      "spurious_copper": {
+       "P": 0.932,
+       "R": 0.932,
+       "found": 123,
+       "missed": 9,
+       "false": 9
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_half_B": {
+     "P": 0.807,
+     "R": 0.94,
+     "found": 359,
+     "missed": 23,
+     "false": 86,
+     "images": 76,
+     "images_flagged": 76,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.887,
+       "R": 0.917,
+       "found": 55,
+       "missed": 5,
+       "false": 7
+      },
+      "mouse_bite": {
+       "P": 0.955,
+       "R": 0.969,
+       "found": 63,
+       "missed": 2,
+       "false": 3
+      },
+      "open_circuit": {
+       "P": 0.861,
+       "R": 0.939,
+       "found": 62,
+       "missed": 4,
+       "false": 10
+      },
+      "short": {
+       "P": 0.54,
+       "R": 0.885,
+       "found": 54,
+       "missed": 7,
+       "false": 46
+      },
+      "spur": {
+       "P": 0.81,
+       "R": 0.985,
+       "found": 64,
+       "missed": 1,
+       "false": 15
+      },
+      "spurious_copper": {
+       "P": 0.924,
+       "R": 0.938,
+       "found": 61,
+       "missed": 4,
+       "false": 5
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb": {
+     "P": 0.049,
+     "R": 0.004,
+     "found": 11,
+     "missed": 3096,
+     "false": 213,
+     "images": 2000,
+     "images_flagged": 106,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 92
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 700,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.5,
+       "R": 0.008,
+       "found": 6,
+       "missed": 765,
+       "false": 6
+      },
+      "short": {
+       "P": 0.333,
+       "R": 0.007,
+       "found": 4,
+       "missed": 538,
+       "false": 8
+      },
+      "spur": {
+       "P": 0.01,
+       "R": 0.002,
+       "found": 1,
+       "missed": 550,
+       "false": 101
+      },
+      "spurious_copper": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 543,
+       "false": 6
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb_iou0.3": {
+     "P": 0.098,
+     "R": 0.007,
+     "found": 22,
+     "missed": 3085,
+     "false": 202,
+     "images": 2000,
+     "images_flagged": 106,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 92
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 700,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.833,
+       "R": 0.013,
+       "found": 10,
+       "missed": 761,
+       "false": 2
+      },
+      "short": {
+       "P": 0.917,
+       "R": 0.02,
+       "found": 11,
+       "missed": 531,
+       "false": 1
+      },
+      "spur": {
+       "P": 0.01,
+       "R": 0.002,
+       "found": 1,
+       "missed": 550,
+       "false": 101
+      },
+      "spurious_copper": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 543,
+       "false": 6
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd": {
+     "P": 0.0,
+     "R": 0.0,
+     "found": 0,
+     "missed": 1850,
+     "false": 57,
+     "images": 993,
+     "images_flagged": 35,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 57
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 410,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 265,
+       "false": 0
+      },
+      "short": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 134,
+       "false": 0
+      },
+      "spur": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 811,
+       "false": 0
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 230,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd_iou0.3": {
+     "P": 0.0,
+     "R": 0.0,
+     "found": 0,
+     "missed": 1850,
+     "false": 57,
+     "images": 993,
+     "images_flagged": 35,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 57
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 410,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 265,
+       "false": 0
+      },
+      "short": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 134,
+       "false": 0
+      },
+      "spur": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 811,
+       "false": 0
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 230,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "real_pcbdefect": {
+     "P": null,
+     "R": 0.0,
+     "found": 0,
+     "missed": 604,
+     "false": 0,
+     "images": 42,
+     "images_flagged": 0,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 256,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 62,
+       "false": 0
+      },
+      "short": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 49,
+       "false": 0
+      },
+      "spur": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 131,
+       "false": 0
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 46,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 60,
+       "false": 0
+      }
+     }
+    },
+    "real_pcbdefect_iou0.3": {
+     "P": null,
+     "R": 0.0,
+     "found": 0,
+     "missed": 604,
+     "false": 0,
+     "images": 42,
+     "images_flagged": 0,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 256,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 62,
+       "false": 0
+      },
+      "short": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 49,
+       "false": 0
+      },
+      "spur": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 131,
+       "false": 0
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 46,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 60,
+       "false": 0
+      }
+     }
+    },
+    "real_defectdet": {
+     "P": 0.0,
+     "R": 0.0,
+     "found": 0,
+     "missed": 212,
+     "false": 23,
+     "images": 44,
+     "images_flagged": 17,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 5
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 0
+      },
+      "short": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 45,
+       "false": 10
+      },
+      "spur": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 8
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 35,
+       "false": 0
+      }
+     }
+    },
+    "real_defectdet_iou0.3": {
+     "P": 0.043,
+     "R": 0.005,
+     "found": 1,
+     "missed": 211,
+     "false": 22,
+     "images": 44,
+     "images_flagged": 17,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 5
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 0
+      },
+      "short": {
+       "P": 0.1,
+       "R": 0.022,
+       "found": 1,
+       "missed": 44,
+       "false": 9
+      },
+      "spur": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 8
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 35,
+       "false": 0
+      }
+     }
+    },
+    "green_clean": {
+     "images": 37,
+     "images_with_false_alarm": 0,
+     "false_boxes": 0,
+     "by_class": {}
+    },
+    "phone_clean": {
+     "images": 82,
+     "images_with_false_alarm": 0,
+     "false_boxes": 0,
+     "by_class": {}
+    }
+   },
+   "tuned": {
+    "pku_boards_all": {
+     "P": 0.885,
+     "R": 0.938,
+     "found": 720,
+     "missed": 48,
+     "false": 94,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.935,
+       "R": 0.913,
+       "found": 116,
+       "missed": 11,
+       "false": 8
+      },
+      "mouse_bite": {
+       "P": 0.931,
+       "R": 0.96,
+       "found": 121,
+       "missed": 5,
+       "false": 9
+      },
+      "open_circuit": {
+       "P": 0.939,
+       "R": 0.947,
+       "found": 124,
+       "missed": 7,
+       "false": 8
+      },
+      "short": {
+       "P": 0.801,
+       "R": 0.897,
+       "found": 113,
+       "missed": 13,
+       "false": 28
+      },
+      "spur": {
+       "P": 0.85,
+       "R": 0.944,
+       "found": 119,
+       "missed": 7,
+       "false": 21
+      },
+      "spurious_copper": {
+       "P": 0.864,
+       "R": 0.962,
+       "found": 127,
+       "missed": 5,
+       "false": 20
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_all_iou0.3": {
+     "P": 0.921,
+     "R": 0.977,
+     "found": 750,
+     "missed": 18,
+     "false": 64,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.976,
+       "R": 0.953,
+       "found": 121,
+       "missed": 6,
+       "false": 3
+      },
+      "mouse_bite": {
+       "P": 0.962,
+       "R": 0.992,
+       "found": 125,
+       "missed": 1,
+       "false": 5
+      },
+      "open_circuit": {
+       "P": 0.962,
+       "R": 0.969,
+       "found": 127,
+       "missed": 4,
+       "false": 5
+      },
+      "short": {
+       "P": 0.894,
+       "R": 1.0,
+       "found": 126,
+       "missed": 0,
+       "false": 15
+      },
+      "spur": {
+       "P": 0.871,
+       "R": 0.968,
+       "found": 122,
+       "missed": 4,
+       "false": 18
+      },
+      "spurious_copper": {
+       "P": 0.878,
+       "R": 0.977,
+       "found": 129,
+       "missed": 3,
+       "false": 18
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_half_B": {
+     "P": 0.87,
+     "R": 0.929,
+     "found": 355,
+     "missed": 27,
+     "false": 53,
+     "images": 76,
+     "images_flagged": 76,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.9,
+       "R": 0.9,
+       "found": 54,
+       "missed": 6,
+       "false": 6
+      },
+      "mouse_bite": {
+       "P": 0.955,
+       "R": 0.969,
+       "found": 63,
+       "missed": 2,
+       "false": 3
+      },
+      "open_circuit": {
+       "P": 0.894,
+       "R": 0.894,
+       "found": 59,
+       "missed": 7,
+       "false": 7
+      },
+      "short": {
+       "P": 0.783,
+       "R": 0.885,
+       "found": 54,
+       "missed": 7,
+       "false": 15
+      },
+      "spur": {
+       "P": 0.847,
+       "R": 0.938,
+       "found": 61,
+       "missed": 4,
+       "false": 11
+      },
+      "spurious_copper": {
+       "P": 0.853,
+       "R": 0.985,
+       "found": 64,
+       "missed": 1,
+       "false": 11
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb": {
+     "P": 0.046,
+     "R": 0.003,
+     "found": 9,
+     "missed": 3098,
+     "false": 186,
+     "images": 2000,
+     "images_flagged": 104,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 65
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 700,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.429,
+       "R": 0.004,
+       "found": 3,
+       "missed": 768,
+       "false": 4
+      },
+      "short": {
+       "P": 0.4,
+       "R": 0.007,
+       "found": 4,
+       "missed": 538,
+       "false": 6
+      },
+      "spur": {
+       "P": 0.017,
+       "R": 0.002,
+       "found": 1,
+       "missed": 550,
+       "false": 57
+      },
+      "spurious_copper": {
+       "P": 0.018,
+       "R": 0.002,
+       "found": 1,
+       "missed": 542,
+       "false": 54
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb_iou0.3": {
+     "P": 0.097,
+     "R": 0.006,
+     "found": 19,
+     "missed": 3088,
+     "false": 176,
+     "images": 2000,
+     "images_flagged": 104,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 65
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 700,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 1.0,
+       "R": 0.009,
+       "found": 7,
+       "missed": 764,
+       "false": 0
+      },
+      "short": {
+       "P": 1.0,
+       "R": 0.018,
+       "found": 10,
+       "missed": 532,
+       "false": 0
+      },
+      "spur": {
+       "P": 0.017,
+       "R": 0.002,
+       "found": 1,
+       "missed": 550,
+       "false": 57
+      },
+      "spurious_copper": {
+       "P": 0.018,
+       "R": 0.002,
+       "found": 1,
+       "missed": 542,
+       "false": 54
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd": {
+     "P": 0.0,
+     "R": 0.0,
+     "found": 0,
+     "missed": 1850,
+     "false": 28,
+     "images": 993,
+     "images_flagged": 18,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 28
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 410,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 265,
+       "false": 0
+      },
+      "short": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 134,
+       "false": 0
+      },
+      "spur": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 811,
+       "false": 0
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 230,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd_iou0.3": {
+     "P": 0.0,
+     "R": 0.0,
+     "found": 0,
+     "missed": 1850,
+     "false": 28,
+     "images": 993,
+     "images_flagged": 18,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 28
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 410,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 265,
+       "false": 0
+      },
+      "short": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 134,
+       "false": 0
+      },
+      "spur": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 811,
+       "false": 0
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 230,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "real_pcbdefect": {
+     "P": null,
+     "R": 0.0,
+     "found": 0,
+     "missed": 604,
+     "false": 0,
+     "images": 42,
+     "images_flagged": 0,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 256,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 62,
+       "false": 0
+      },
+      "short": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 49,
+       "false": 0
+      },
+      "spur": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 131,
+       "false": 0
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 46,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 60,
+       "false": 0
+      }
+     }
+    },
+    "real_pcbdefect_iou0.3": {
+     "P": null,
+     "R": 0.0,
+     "found": 0,
+     "missed": 604,
+     "false": 0,
+     "images": 42,
+     "images_flagged": 0,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 256,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 62,
+       "false": 0
+      },
+      "short": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 49,
+       "false": 0
+      },
+      "spur": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 131,
+       "false": 0
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 46,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 60,
+       "false": 0
+      }
+     }
+    },
+    "real_defectdet": {
+     "P": 0.125,
+     "R": 0.009,
+     "found": 2,
+     "missed": 210,
+     "false": 14,
+     "images": 44,
+     "images_flagged": 13,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 2
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 0
+      },
+      "short": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 45,
+       "false": 5
+      },
+      "spur": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 6
+      },
+      "spurious_copper": {
+       "P": 0.667,
+       "R": 0.045,
+       "found": 2,
+       "missed": 42,
+       "false": 1
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 35,
+       "false": 0
+      }
+     }
+    },
+    "real_defectdet_iou0.3": {
+     "P": 0.125,
+     "R": 0.009,
+     "found": 2,
+     "missed": 210,
+     "false": 14,
+     "images": 44,
+     "images_flagged": 13,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 2
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 0
+      },
+      "short": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 45,
+       "false": 5
+      },
+      "spur": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 6
+      },
+      "spurious_copper": {
+       "P": 0.667,
+       "R": 0.045,
+       "found": 2,
+       "missed": 42,
+       "false": 1
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 35,
+       "false": 0
+      }
+     }
+    },
+    "green_clean": {
+     "images": 37,
+     "images_with_false_alarm": 0,
+     "false_boxes": 0,
+     "by_class": {}
+    },
+    "phone_clean": {
+     "images": 82,
+     "images_with_false_alarm": 0,
+     "false_boxes": 0,
+     "by_class": {}
+    }
+   }
+  },
+  "new_e11": {
+   "tuned_thresholds_on_pku_half_A": {
+    "missing_hole": 0.55,
+    "mouse_bite": 0.65,
+    "open_circuit": 0.35,
+    "short": 0.55,
+    "spur": 0.5,
+    "spurious_copper": 0.65,
+    "missing_pad": 0.1
+   },
+   "app": {
+    "pku_boards_all": {
+     "P": 0.734,
+     "R": 0.961,
+     "found": 738,
+     "missed": 30,
+     "false": 267,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.921,
+       "R": 0.913,
+       "found": 116,
+       "missed": 11,
+       "false": 10
+      },
+      "mouse_bite": {
+       "P": 0.906,
+       "R": 0.992,
+       "found": 125,
+       "missed": 1,
+       "false": 13
+      },
+      "open_circuit": {
+       "P": 0.978,
+       "R": 1.0,
+       "found": 131,
+       "missed": 0,
+       "false": 3
+      },
+      "short": {
+       "P": 0.357,
+       "R": 0.921,
+       "found": 116,
+       "missed": 10,
+       "false": 209
+      },
+      "spur": {
+       "P": 0.857,
+       "R": 0.952,
+       "found": 120,
+       "missed": 6,
+       "false": 20
+      },
+      "spurious_copper": {
+       "P": 0.915,
+       "R": 0.985,
+       "found": 130,
+       "missed": 2,
+       "false": 12
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_all_iou0.3": {
+     "P": 0.756,
+     "R": 0.99,
+     "found": 760,
+     "missed": 8,
+     "false": 245,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.976,
+       "R": 0.969,
+       "found": 123,
+       "missed": 4,
+       "false": 3
+      },
+      "mouse_bite": {
+       "P": 0.913,
+       "R": 1.0,
+       "found": 126,
+       "missed": 0,
+       "false": 12
+      },
+      "open_circuit": {
+       "P": 0.978,
+       "R": 1.0,
+       "found": 131,
+       "missed": 0,
+       "false": 3
+      },
+      "short": {
+       "P": 0.385,
+       "R": 0.992,
+       "found": 125,
+       "missed": 1,
+       "false": 200
+      },
+      "spur": {
+       "P": 0.886,
+       "R": 0.984,
+       "found": 124,
+       "missed": 2,
+       "false": 16
+      },
+      "spurious_copper": {
+       "P": 0.923,
+       "R": 0.992,
+       "found": 131,
+       "missed": 1,
+       "false": 11
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_half_B": {
+     "P": 0.73,
+     "R": 0.961,
+     "found": 367,
+     "missed": 15,
+     "false": 136,
+     "images": 76,
+     "images_flagged": 76,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.902,
+       "R": 0.917,
+       "found": 55,
+       "missed": 5,
+       "false": 6
+      },
+      "mouse_bite": {
+       "P": 0.942,
+       "R": 1.0,
+       "found": 65,
+       "missed": 0,
+       "false": 4
+      },
+      "open_circuit": {
+       "P": 0.971,
+       "R": 1.0,
+       "found": 66,
+       "missed": 0,
+       "false": 2
+      },
+      "short": {
+       "P": 0.341,
+       "R": 0.918,
+       "found": 56,
+       "missed": 5,
+       "false": 108
+      },
+      "spur": {
+       "P": 0.861,
+       "R": 0.954,
+       "found": 62,
+       "missed": 3,
+       "false": 10
+      },
+      "spurious_copper": {
+       "P": 0.913,
+       "R": 0.969,
+       "found": 63,
+       "missed": 2,
+       "false": 6
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb": {
+     "P": 0.825,
+     "R": 0.886,
+     "found": 2752,
+     "missed": 355,
+     "false": 585,
+     "images": 2000,
+     "images_flagged": 1579,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.881,
+       "R": 0.887,
+       "found": 621,
+       "missed": 79,
+       "false": 84
+      },
+      "open_circuit": {
+       "P": 0.831,
+       "R": 0.881,
+       "found": 679,
+       "missed": 92,
+       "false": 138
+      },
+      "short": {
+       "P": 0.696,
+       "R": 0.799,
+       "found": 433,
+       "missed": 109,
+       "false": 189
+      },
+      "spur": {
+       "P": 0.855,
+       "R": 0.9,
+       "found": 496,
+       "missed": 55,
+       "false": 84
+      },
+      "spurious_copper": {
+       "P": 0.853,
+       "R": 0.963,
+       "found": 523,
+       "missed": 20,
+       "false": 90
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb_iou0.3": {
+     "P": 0.835,
+     "R": 0.897,
+     "found": 2788,
+     "missed": 319,
+     "false": 549,
+     "images": 2000,
+     "images_flagged": 1579,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.888,
+       "R": 0.894,
+       "found": 626,
+       "missed": 74,
+       "false": 79
+      },
+      "open_circuit": {
+       "P": 0.848,
+       "R": 0.899,
+       "found": 693,
+       "missed": 78,
+       "false": 124
+      },
+      "short": {
+       "P": 0.714,
+       "R": 0.819,
+       "found": 444,
+       "missed": 98,
+       "false": 178
+      },
+      "spur": {
+       "P": 0.866,
+       "R": 0.911,
+       "found": 502,
+       "missed": 49,
+       "false": 78
+      },
+      "spurious_copper": {
+       "P": 0.853,
+       "R": 0.963,
+       "found": 523,
+       "missed": 20,
+       "false": 90
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd": {
+     "P": 0.812,
+     "R": 0.396,
+     "found": 733,
+     "missed": 1117,
+     "false": 170,
+     "images": 993,
+     "images_flagged": 685,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.784,
+       "R": 0.488,
+       "found": 200,
+       "missed": 210,
+       "false": 55
+      },
+      "open_circuit": {
+       "P": 0.784,
+       "R": 0.63,
+       "found": 167,
+       "missed": 98,
+       "false": 46
+      },
+      "short": {
+       "P": 0.796,
+       "R": 0.612,
+       "found": 82,
+       "missed": 52,
+       "false": 21
+      },
+      "spur": {
+       "P": 0.84,
+       "R": 0.213,
+       "found": 173,
+       "missed": 638,
+       "false": 33
+      },
+      "spurious_copper": {
+       "P": 0.881,
+       "R": 0.483,
+       "found": 111,
+       "missed": 119,
+       "false": 15
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd_iou0.3": {
+     "P": 0.869,
+     "R": 0.424,
+     "found": 785,
+     "missed": 1065,
+     "false": 118,
+     "images": 993,
+     "images_flagged": 685,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.867,
+       "R": 0.539,
+       "found": 221,
+       "missed": 189,
+       "false": 34
+      },
+      "open_circuit": {
+       "P": 0.845,
+       "R": 0.679,
+       "found": 180,
+       "missed": 85,
+       "false": 33
+      },
+      "short": {
+       "P": 0.816,
+       "R": 0.627,
+       "found": 84,
+       "missed": 50,
+       "false": 19
+      },
+      "spur": {
+       "P": 0.908,
+       "R": 0.231,
+       "found": 187,
+       "missed": 624,
+       "false": 19
+      },
+      "spurious_copper": {
+       "P": 0.897,
+       "R": 0.491,
+       "found": 113,
+       "missed": 117,
+       "false": 13
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "real_pcbdefect": {
+     "P": 0.0,
+     "R": 0.0,
+     "found": 0,
+     "missed": 604,
+     "false": 34,
+     "images": 42,
+     "images_flagged": 23,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 256,
+       "false": 11
+      },
+      "open_circuit": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 62,
+       "false": 1
+      },
+      "short": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 49,
+       "false": 8
+      },
+      "spur": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 131,
+       "false": 6
+      },
+      "spurious_copper": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 46,
+       "false": 8
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 60,
+       "false": 0
+      }
+     }
+    },
+    "real_pcbdefect_iou0.3": {
+     "P": 0.029,
+     "R": 0.002,
+     "found": 1,
+     "missed": 603,
+     "false": 33,
+     "images": 42,
+     "images_flagged": 23,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.091,
+       "R": 0.004,
+       "found": 1,
+       "missed": 255,
+       "false": 10
+      },
+      "open_circuit": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 62,
+       "false": 1
+      },
+      "short": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 49,
+       "false": 8
+      },
+      "spur": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 131,
+       "false": 6
+      },
+      "spurious_copper": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 46,
+       "false": 8
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 60,
+       "false": 0
+      }
+     }
+    },
+    "real_defectdet": {
+     "P": 0.469,
+     "R": 0.25,
+     "found": 53,
+     "missed": 159,
+     "false": 60,
+     "images": 44,
+     "images_flagged": 40,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 43
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 1
+      },
+      "short": {
+       "P": 0.792,
+       "R": 0.422,
+       "found": 19,
+       "missed": 26,
+       "false": 5
+      },
+      "spur": {
+       "P": 0.829,
+       "R": 0.659,
+       "found": 29,
+       "missed": 15,
+       "false": 6
+      },
+      "spurious_copper": {
+       "P": 0.5,
+       "R": 0.114,
+       "found": 5,
+       "missed": 39,
+       "false": 5
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 35,
+       "false": 0
+      }
+     }
+    },
+    "real_defectdet_iou0.3": {
+     "P": 0.54,
+     "R": 0.288,
+     "found": 61,
+     "missed": 151,
+     "false": 52,
+     "images": 44,
+     "images_flagged": 40,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 43
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 1
+      },
+      "short": {
+       "P": 0.875,
+       "R": 0.467,
+       "found": 21,
+       "missed": 24,
+       "false": 3
+      },
+      "spur": {
+       "P": 0.943,
+       "R": 0.75,
+       "found": 33,
+       "missed": 11,
+       "false": 2
+      },
+      "spurious_copper": {
+       "P": 0.7,
+       "R": 0.159,
+       "found": 7,
+       "missed": 37,
+       "false": 3
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 35,
+       "false": 0
+      }
+     }
+    },
+    "green_clean": {
+     "images": 37,
+     "images_with_false_alarm": 4,
+     "false_boxes": 4,
+     "by_class": {
+      "spurious_copper": 4
+     }
+    },
+    "phone_clean": {
+     "images": 82,
+     "images_with_false_alarm": 0,
+     "false_boxes": 0,
+     "by_class": {}
+    }
+   },
+   "tuned": {
+    "pku_boards_all": {
+     "P": 0.941,
+     "R": 0.917,
+     "found": 704,
+     "missed": 64,
+     "false": 44,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.943,
+       "R": 0.906,
+       "found": 115,
+       "missed": 12,
+       "false": 7
+      },
+      "mouse_bite": {
+       "P": 0.96,
+       "R": 0.96,
+       "found": 121,
+       "missed": 5,
+       "false": 5
+      },
+      "open_circuit": {
+       "P": 0.978,
+       "R": 1.0,
+       "found": 131,
+       "missed": 0,
+       "false": 3
+      },
+      "short": {
+       "P": 0.912,
+       "R": 0.738,
+       "found": 93,
+       "missed": 33,
+       "false": 9
+      },
+      "spur": {
+       "P": 0.887,
+       "R": 0.937,
+       "found": 118,
+       "missed": 8,
+       "false": 15
+      },
+      "spurious_copper": {
+       "P": 0.962,
+       "R": 0.955,
+       "found": 126,
+       "missed": 6,
+       "false": 5
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_all_iou0.3": {
+     "P": 0.965,
+     "R": 0.94,
+     "found": 722,
+     "missed": 46,
+     "false": 26,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.992,
+       "R": 0.953,
+       "found": 121,
+       "missed": 6,
+       "false": 1
+      },
+      "mouse_bite": {
+       "P": 0.968,
+       "R": 0.968,
+       "found": 122,
+       "missed": 4,
+       "false": 4
+      },
+      "open_circuit": {
+       "P": 0.978,
+       "R": 1.0,
+       "found": 131,
+       "missed": 0,
+       "false": 3
+      },
+      "short": {
+       "P": 0.971,
+       "R": 0.786,
+       "found": 99,
+       "missed": 27,
+       "false": 3
+      },
+      "spur": {
+       "P": 0.917,
+       "R": 0.968,
+       "found": 122,
+       "missed": 4,
+       "false": 11
+      },
+      "spurious_copper": {
+       "P": 0.969,
+       "R": 0.962,
+       "found": 127,
+       "missed": 5,
+       "false": 4
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_half_B": {
+     "P": 0.936,
+     "R": 0.924,
+     "found": 353,
+     "missed": 29,
+     "false": 24,
+     "images": 76,
+     "images_flagged": 76,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.915,
+       "R": 0.9,
+       "found": 54,
+       "missed": 6,
+       "false": 5
+      },
+      "mouse_bite": {
+       "P": 0.985,
+       "R": 0.985,
+       "found": 64,
+       "missed": 1,
+       "false": 1
+      },
+      "open_circuit": {
+       "P": 0.971,
+       "R": 1.0,
+       "found": 66,
+       "missed": 0,
+       "false": 2
+      },
+      "short": {
+       "P": 0.906,
+       "R": 0.787,
+       "found": 48,
+       "missed": 13,
+       "false": 5
+      },
+      "spur": {
+       "P": 0.897,
+       "R": 0.938,
+       "found": 61,
+       "missed": 4,
+       "false": 7
+      },
+      "spurious_copper": {
+       "P": 0.938,
+       "R": 0.923,
+       "found": 60,
+       "missed": 5,
+       "false": 4
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb": {
+     "P": 0.901,
+     "R": 0.791,
+     "found": 2457,
+     "missed": 650,
+     "false": 271,
+     "images": 2000,
+     "images_flagged": 1462,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.973,
+       "R": 0.716,
+       "found": 501,
+       "missed": 199,
+       "false": 14
+      },
+      "open_circuit": {
+       "P": 0.803,
+       "R": 0.899,
+       "found": 693,
+       "missed": 78,
+       "false": 170
+      },
+      "short": {
+       "P": 0.927,
+       "R": 0.542,
+       "found": 294,
+       "missed": 248,
+       "false": 23
+      },
+      "spur": {
+       "P": 0.912,
+       "R": 0.866,
+       "found": 477,
+       "missed": 74,
+       "false": 46
+      },
+      "spurious_copper": {
+       "P": 0.965,
+       "R": 0.906,
+       "found": 492,
+       "missed": 51,
+       "false": 18
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb_iou0.3": {
+     "P": 0.911,
+     "R": 0.799,
+     "found": 2484,
+     "missed": 623,
+     "false": 244,
+     "images": 2000,
+     "images_flagged": 1462,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.979,
+       "R": 0.72,
+       "found": 504,
+       "missed": 196,
+       "false": 11
+      },
+      "open_circuit": {
+       "P": 0.822,
+       "R": 0.92,
+       "found": 709,
+       "missed": 62,
+       "false": 154
+      },
+      "short": {
+       "P": 0.94,
+       "R": 0.55,
+       "found": 298,
+       "missed": 244,
+       "false": 19
+      },
+      "spur": {
+       "P": 0.92,
+       "R": 0.873,
+       "found": 481,
+       "missed": 70,
+       "false": 42
+      },
+      "spurious_copper": {
+       "P": 0.965,
+       "R": 0.906,
+       "found": 492,
+       "missed": 51,
+       "false": 18
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd": {
+     "P": 0.839,
+     "R": 0.188,
+     "found": 348,
+     "missed": 1502,
+     "false": 67,
+     "images": 993,
+     "images_flagged": 338,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 1.0,
+       "R": 0.037,
+       "found": 15,
+       "missed": 395,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.768,
+       "R": 0.687,
+       "found": 182,
+       "missed": 83,
+       "false": 55
+      },
+      "short": {
+       "P": 0.944,
+       "R": 0.254,
+       "found": 34,
+       "missed": 100,
+       "false": 2
+      },
+      "spur": {
+       "P": 0.903,
+       "R": 0.104,
+       "found": 84,
+       "missed": 727,
+       "false": 9
+      },
+      "spurious_copper": {
+       "P": 0.971,
+       "R": 0.143,
+       "found": 33,
+       "missed": 197,
+       "false": 1
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd_iou0.3": {
+     "P": 0.882,
+     "R": 0.198,
+     "found": 366,
+     "missed": 1484,
+     "false": 49,
+     "images": 993,
+     "images_flagged": 338,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 1.0,
+       "R": 0.037,
+       "found": 15,
+       "missed": 395,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.831,
+       "R": 0.743,
+       "found": 197,
+       "missed": 68,
+       "false": 40
+      },
+      "short": {
+       "P": 0.944,
+       "R": 0.254,
+       "found": 34,
+       "missed": 100,
+       "false": 2
+      },
+      "spur": {
+       "P": 0.935,
+       "R": 0.107,
+       "found": 87,
+       "missed": 724,
+       "false": 6
+      },
+      "spurious_copper": {
+       "P": 0.971,
+       "R": 0.143,
+       "found": 33,
+       "missed": 197,
+       "false": 1
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "real_pcbdefect": {
+     "P": 0.0,
+     "R": 0.0,
+     "found": 0,
+     "missed": 604,
+     "false": 5,
+     "images": 42,
+     "images_flagged": 5,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 256,
+       "false": 1
+      },
+      "open_circuit": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 62,
+       "false": 1
+      },
+      "short": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 49,
+       "false": 0
+      },
+      "spur": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 131,
+       "false": 3
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 46,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 60,
+       "false": 0
+      }
+     }
+    },
+    "real_pcbdefect_iou0.3": {
+     "P": 0.0,
+     "R": 0.0,
+     "found": 0,
+     "missed": 604,
+     "false": 5,
+     "images": 42,
+     "images_flagged": 5,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 256,
+       "false": 1
+      },
+      "open_circuit": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 62,
+       "false": 1
+      },
+      "short": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 49,
+       "false": 0
+      },
+      "spur": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 131,
+       "false": 3
+      },
+      "spurious_copper": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 46,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 60,
+       "false": 0
+      }
+     }
+    },
+    "real_defectdet": {
+     "P": 0.452,
+     "R": 0.132,
+     "found": 28,
+     "missed": 184,
+     "false": 34,
+     "images": 44,
+     "images_flagged": 36,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 29
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 1
+      },
+      "short": {
+       "P": 1.0,
+       "R": 0.111,
+       "found": 5,
+       "missed": 40,
+       "false": 0
+      },
+      "spur": {
+       "P": 0.846,
+       "R": 0.5,
+       "found": 22,
+       "missed": 22,
+       "false": 4
+      },
+      "spurious_copper": {
+       "P": 1.0,
+       "R": 0.023,
+       "found": 1,
+       "missed": 43,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 35,
+       "false": 0
+      }
+     }
+    },
+    "real_defectdet_iou0.3": {
+     "P": 0.516,
+     "R": 0.151,
+     "found": 32,
+     "missed": 180,
+     "false": 30,
+     "images": 44,
+     "images_flagged": 36,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.0,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 29
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.0,
+       "R": 0.0,
+       "found": 0,
+       "missed": 44,
+       "false": 1
+      },
+      "short": {
+       "P": 1.0,
+       "R": 0.111,
+       "found": 5,
+       "missed": 40,
+       "false": 0
+      },
+      "spur": {
+       "P": 1.0,
+       "R": 0.591,
+       "found": 26,
+       "missed": 18,
+       "false": 0
+      },
+      "spurious_copper": {
+       "P": 1.0,
+       "R": 0.023,
+       "found": 1,
+       "missed": 43,
+       "false": 0
+      },
+      "missing_pad": {
+       "P": null,
+       "R": 0.0,
+       "found": 0,
+       "missed": 35,
+       "false": 0
+      }
+     }
+    },
+    "green_clean": {
+     "images": 37,
+     "images_with_false_alarm": 0,
+     "false_boxes": 0,
+     "by_class": {}
+    },
+    "phone_clean": {
+     "images": 82,
+     "images_with_false_alarm": 0,
+     "false_boxes": 0,
+     "by_class": {}
+    }
+   }
+  },
+  "v3": {
+   "tuned_thresholds_on_pku_half_A": {
+    "missing_hole": 0.5,
+    "mouse_bite": 0.35,
+    "open_circuit": 0.55,
+    "short": 0.45,
+    "spur": 0.45,
+    "spurious_copper": 0.6,
+    "missing_pad": 0.1
+   },
+   "app": {
+    "pku_boards_all": {
+     "P": 0.572,
+     "R": 0.957,
+     "found": 735,
+     "missed": 33,
+     "false": 550,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.589,
+       "R": 0.858,
+       "found": 109,
+       "missed": 18,
+       "false": 76
+      },
+      "mouse_bite": {
+       "P": 0.932,
+       "R": 0.984,
+       "found": 124,
+       "missed": 2,
+       "false": 9
+      },
+      "open_circuit": {
+       "P": 0.824,
+       "R": 1.0,
+       "found": 131,
+       "missed": 0,
+       "false": 28
+      },
+      "short": {
+       "P": 0.239,
+       "R": 0.937,
+       "found": 118,
+       "missed": 8,
+       "false": 376
+      },
+      "spur": {
+       "P": 0.871,
+       "R": 0.96,
+       "found": 121,
+       "missed": 5,
+       "false": 18
+      },
+      "spurious_copper": {
+       "P": 0.754,
+       "R": 1.0,
+       "found": 132,
+       "missed": 0,
+       "false": 43
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_all_iou0.3": {
+     "P": 0.594,
+     "R": 0.993,
+     "found": 763,
+     "missed": 5,
+     "false": 522,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.67,
+       "R": 0.976,
+       "found": 124,
+       "missed": 3,
+       "false": 61
+      },
+      "mouse_bite": {
+       "P": 0.947,
+       "R": 1.0,
+       "found": 126,
+       "missed": 0,
+       "false": 7
+      },
+      "open_circuit": {
+       "P": 0.824,
+       "R": 1.0,
+       "found": 131,
+       "missed": 0,
+       "false": 28
+      },
+      "short": {
+       "P": 0.255,
+       "R": 1.0,
+       "found": 126,
+       "missed": 0,
+       "false": 368
+      },
+      "spur": {
+       "P": 0.892,
+       "R": 0.984,
+       "found": 124,
+       "missed": 2,
+       "false": 15
+      },
+      "spurious_copper": {
+       "P": 0.754,
+       "R": 1.0,
+       "found": 132,
+       "missed": 0,
+       "false": 43
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_half_B": {
+     "P": 0.571,
+     "R": 0.955,
+     "found": 365,
+     "missed": 17,
+     "false": 274,
+     "images": 76,
+     "images_flagged": 76,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.578,
+       "R": 0.867,
+       "found": 52,
+       "missed": 8,
+       "false": 38
+      },
+      "mouse_bite": {
+       "P": 0.956,
+       "R": 1.0,
+       "found": 65,
+       "missed": 0,
+       "false": 3
+      },
+      "open_circuit": {
+       "P": 0.825,
+       "R": 1.0,
+       "found": 66,
+       "missed": 0,
+       "false": 14
+      },
+      "short": {
+       "P": 0.229,
+       "R": 0.918,
+       "found": 56,
+       "missed": 5,
+       "false": 189
+      },
+      "spur": {
+       "P": 0.871,
+       "R": 0.938,
+       "found": 61,
+       "missed": 4,
+       "false": 9
+      },
+      "spurious_copper": {
+       "P": 0.756,
+       "R": 1.0,
+       "found": 65,
+       "missed": 0,
+       "false": 21
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb": {
+     "P": 0.851,
+     "R": 0.937,
+     "found": 2911,
+     "missed": 196,
+     "false": 508,
+     "images": 2000,
+     "images_flagged": 1621,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.887,
+       "R": 0.949,
+       "found": 664,
+       "missed": 36,
+       "false": 85
+      },
+      "open_circuit": {
+       "P": 0.901,
+       "R": 0.934,
+       "found": 720,
+       "missed": 51,
+       "false": 79
+      },
+      "short": {
+       "P": 0.679,
+       "R": 0.889,
+       "found": 482,
+       "missed": 60,
+       "false": 228
+      },
+      "spur": {
+       "P": 0.925,
+       "R": 0.94,
+       "found": 518,
+       "missed": 33,
+       "false": 42
+      },
+      "spurious_copper": {
+       "P": 0.877,
+       "R": 0.971,
+       "found": 527,
+       "missed": 16,
+       "false": 74
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb_iou0.3": {
+     "P": 0.858,
+     "R": 0.945,
+     "found": 2935,
+     "missed": 172,
+     "false": 484,
+     "images": 2000,
+     "images_flagged": 1621,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.895,
+       "R": 0.957,
+       "found": 670,
+       "missed": 30,
+       "false": 79
+      },
+      "open_circuit": {
+       "P": 0.915,
+       "R": 0.948,
+       "found": 731,
+       "missed": 40,
+       "false": 68
+      },
+      "short": {
+       "P": 0.687,
+       "R": 0.9,
+       "found": 488,
+       "missed": 54,
+       "false": 222
+      },
+      "spur": {
+       "P": 0.927,
+       "R": 0.942,
+       "found": 519,
+       "missed": 32,
+       "false": 41
+      },
+      "spurious_copper": {
+       "P": 0.877,
+       "R": 0.971,
+       "found": 527,
+       "missed": 16,
+       "false": 74
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd": {
+     "P": 0.864,
+     "R": 0.475,
+     "found": 878,
+     "missed": 972,
+     "false": 138,
+     "images": 993,
+     "images_flagged": 765,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.904,
+       "R": 0.527,
+       "found": 216,
+       "missed": 194,
+       "false": 23
+      },
+      "open_circuit": {
+       "P": 0.859,
+       "R": 0.713,
+       "found": 189,
+       "missed": 76,
+       "false": 31
+      },
+      "short": {
+       "P": 0.725,
+       "R": 0.769,
+       "found": 103,
+       "missed": 31,
+       "false": 39
+      },
+      "spur": {
+       "P": 0.884,
+       "R": 0.282,
+       "found": 229,
+       "missed": 582,
+       "false": 30
+      },
+      "spurious_copper": {
+       "P": 0.904,
+       "R": 0.613,
+       "found": 141,
+       "missed": 89,
+       "false": 15
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd_iou0.3": {
+     "P": 0.897,
+     "R": 0.492,
+     "found": 911,
+     "missed": 939,
+     "false": 105,
+     "images": 993,
+     "images_flagged": 765,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.941,
+       "R": 0.549,
+       "found": 225,
+       "missed": 185,
+       "false": 14
+      },
+      "open_circuit": {
+       "P": 0.9,
+       "R": 0.747,
+       "found": 198,
+       "missed": 67,
+       "false": 22
+      },
+      "short": {
+       "P": 0.768,
+       "R": 0.813,
+       "found": 109,
+       "missed": 25,
+       "false": 33
+      },
+      "spur": {
+       "P": 0.915,
+       "R": 0.292,
+       "found": 237,
+       "missed": 574,
+       "false": 22
+      },
+      "spurious_copper": {
+       "P": 0.91,
+       "R": 0.617,
+       "found": 142,
+       "missed": 88,
+       "false": 14
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "real_pcbdefect": {
+     "P": 0.839,
+     "R": 0.613,
+     "found": 370,
+     "missed": 234,
+     "false": 71,
+     "images": 42,
+     "images_flagged": 42,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.827,
+       "R": 0.484,
+       "found": 124,
+       "missed": 132,
+       "false": 26
+      },
+      "open_circuit": {
+       "P": 0.964,
+       "R": 0.871,
+       "found": 54,
+       "missed": 8,
+       "false": 2
+      },
+      "short": {
+       "P": 0.754,
+       "R": 1.0,
+       "found": 49,
+       "missed": 0,
+       "false": 16
+      },
+      "spur": {
+       "P": 0.909,
+       "R": 0.534,
+       "found": 70,
+       "missed": 61,
+       "false": 7
+      },
+      "spurious_copper": {
+       "P": 0.676,
+       "R": 0.5,
+       "found": 23,
+       "missed": 23,
+       "false": 11
+      },
+      "missing_pad": {
+       "P": 0.847,
+       "R": 0.833,
+       "found": 50,
+       "missed": 10,
+       "false": 9
+      }
+     }
+    },
+    "real_pcbdefect_iou0.3": {
+     "P": 0.855,
+     "R": 0.624,
+     "found": 377,
+     "missed": 227,
+     "false": 64,
+     "images": 42,
+     "images_flagged": 42,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.853,
+       "R": 0.5,
+       "found": 128,
+       "missed": 128,
+       "false": 22
+      },
+      "open_circuit": {
+       "P": 0.964,
+       "R": 0.871,
+       "found": 54,
+       "missed": 8,
+       "false": 2
+      },
+      "short": {
+       "P": 0.754,
+       "R": 1.0,
+       "found": 49,
+       "missed": 0,
+       "false": 16
+      },
+      "spur": {
+       "P": 0.909,
+       "R": 0.534,
+       "found": 70,
+       "missed": 61,
+       "false": 7
+      },
+      "spurious_copper": {
+       "P": 0.765,
+       "R": 0.565,
+       "found": 26,
+       "missed": 20,
+       "false": 8
+      },
+      "missing_pad": {
+       "P": 0.847,
+       "R": 0.833,
+       "found": 50,
+       "missed": 10,
+       "false": 9
+      }
+     }
+    },
+    "real_defectdet": {
+     "P": 0.717,
+     "R": 0.811,
+     "found": 172,
+     "missed": 40,
+     "false": 68,
+     "images": 44,
+     "images_flagged": 44,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.826,
+       "R": 0.864,
+       "found": 38,
+       "missed": 6,
+       "false": 8
+      },
+      "short": {
+       "P": 0.554,
+       "R": 0.8,
+       "found": 36,
+       "missed": 9,
+       "false": 29
+      },
+      "spur": {
+       "P": 0.889,
+       "R": 0.909,
+       "found": 40,
+       "missed": 4,
+       "false": 5
+      },
+      "spurious_copper": {
+       "P": 0.731,
+       "R": 0.864,
+       "found": 38,
+       "missed": 6,
+       "false": 14
+      },
+      "missing_pad": {
+       "P": 0.625,
+       "R": 0.571,
+       "found": 20,
+       "missed": 15,
+       "false": 12
+      }
+     }
+    },
+    "real_defectdet_iou0.3": {
+     "P": 0.746,
+     "R": 0.844,
+     "found": 179,
+     "missed": 33,
+     "false": 61,
+     "images": 44,
+     "images_flagged": 44,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.826,
+       "R": 0.864,
+       "found": 38,
+       "missed": 6,
+       "false": 8
+      },
+      "short": {
+       "P": 0.6,
+       "R": 0.867,
+       "found": 39,
+       "missed": 6,
+       "false": 26
+      },
+      "spur": {
+       "P": 0.933,
+       "R": 0.955,
+       "found": 42,
+       "missed": 2,
+       "false": 3
+      },
+      "spurious_copper": {
+       "P": 0.769,
+       "R": 0.909,
+       "found": 40,
+       "missed": 4,
+       "false": 12
+      },
+      "missing_pad": {
+       "P": 0.625,
+       "R": 0.571,
+       "found": 20,
+       "missed": 15,
+       "false": 12
+      }
+     }
+    },
+    "green_clean": {
+     "images": 37,
+     "images_with_false_alarm": 0,
+     "false_boxes": 0,
+     "by_class": {}
+    },
+    "phone_clean": {
+     "images": 82,
+     "images_with_false_alarm": 3,
+     "false_boxes": 3,
+     "by_class": {
+      "short": 3
+     }
+    }
+   },
+   "tuned": {
+    "pku_boards_all": {
+     "P": 0.69,
+     "R": 0.954,
+     "found": 733,
+     "missed": 35,
+     "false": 329,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.879,
+       "R": 0.858,
+       "found": 109,
+       "missed": 18,
+       "false": 15
+      },
+      "mouse_bite": {
+       "P": 0.925,
+       "R": 0.984,
+       "found": 124,
+       "missed": 2,
+       "false": 10
+      },
+      "open_circuit": {
+       "P": 0.985,
+       "R": 0.985,
+       "found": 129,
+       "missed": 2,
+       "false": 2
+      },
+      "short": {
+       "P": 0.319,
+       "R": 0.937,
+       "found": 118,
+       "missed": 8,
+       "false": 252
+      },
+      "spur": {
+       "P": 0.883,
+       "R": 0.96,
+       "found": 121,
+       "missed": 5,
+       "false": 16
+      },
+      "spurious_copper": {
+       "P": 0.795,
+       "R": 1.0,
+       "found": 132,
+       "missed": 0,
+       "false": 34
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_all_iou0.3": {
+     "P": 0.716,
+     "R": 0.99,
+     "found": 760,
+     "missed": 8,
+     "false": 302,
+     "images": 152,
+     "images_flagged": 152,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.992,
+       "R": 0.969,
+       "found": 123,
+       "missed": 4,
+       "false": 1
+      },
+      "mouse_bite": {
+       "P": 0.94,
+       "R": 1.0,
+       "found": 126,
+       "missed": 0,
+       "false": 8
+      },
+      "open_circuit": {
+       "P": 0.985,
+       "R": 0.985,
+       "found": 129,
+       "missed": 2,
+       "false": 2
+      },
+      "short": {
+       "P": 0.341,
+       "R": 1.0,
+       "found": 126,
+       "missed": 0,
+       "false": 244
+      },
+      "spur": {
+       "P": 0.905,
+       "R": 0.984,
+       "found": 124,
+       "missed": 2,
+       "false": 13
+      },
+      "spurious_copper": {
+       "P": 0.795,
+       "R": 1.0,
+       "found": 132,
+       "missed": 0,
+       "false": 34
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "pku_boards_half_B": {
+     "P": 0.687,
+     "R": 0.953,
+     "found": 364,
+     "missed": 18,
+     "false": 166,
+     "images": 76,
+     "images_flagged": 76,
+     "per_class": {
+      "missing_hole": {
+       "P": 0.867,
+       "R": 0.867,
+       "found": 52,
+       "missed": 8,
+       "false": 8
+      },
+      "mouse_bite": {
+       "P": 0.942,
+       "R": 1.0,
+       "found": 65,
+       "missed": 0,
+       "false": 4
+      },
+      "open_circuit": {
+       "P": 0.97,
+       "R": 0.985,
+       "found": 65,
+       "missed": 1,
+       "false": 2
+      },
+      "short": {
+       "P": 0.306,
+       "R": 0.918,
+       "found": 56,
+       "missed": 5,
+       "false": 127
+      },
+      "spur": {
+       "P": 0.871,
+       "R": 0.938,
+       "found": 61,
+       "missed": 4,
+       "false": 9
+      },
+      "spurious_copper": {
+       "P": 0.802,
+       "R": 1.0,
+       "found": 65,
+       "missed": 0,
+       "false": 16
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb": {
+     "P": 0.899,
+     "R": 0.914,
+     "found": 2839,
+     "missed": 268,
+     "false": 319,
+     "images": 2000,
+     "images_flagged": 1574,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.874,
+       "R": 0.954,
+       "found": 668,
+       "missed": 32,
+       "false": 96
+      },
+      "open_circuit": {
+       "P": 0.943,
+       "R": 0.886,
+       "found": 683,
+       "missed": 88,
+       "false": 41
+      },
+      "short": {
+       "P": 0.802,
+       "R": 0.854,
+       "found": 463,
+       "missed": 79,
+       "false": 114
+      },
+      "spur": {
+       "P": 0.931,
+       "R": 0.929,
+       "found": 512,
+       "missed": 39,
+       "false": 38
+      },
+      "spurious_copper": {
+       "P": 0.945,
+       "R": 0.945,
+       "found": 513,
+       "missed": 30,
+       "false": 30
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "deeppcb_iou0.3": {
+     "P": 0.905,
+     "R": 0.92,
+     "found": 2859,
+     "missed": 248,
+     "false": 299,
+     "images": 2000,
+     "images_flagged": 1574,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.882,
+       "R": 0.963,
+       "found": 674,
+       "missed": 26,
+       "false": 90
+      },
+      "open_circuit": {
+       "P": 0.953,
+       "R": 0.895,
+       "found": 690,
+       "missed": 81,
+       "false": 34
+      },
+      "short": {
+       "P": 0.813,
+       "R": 0.865,
+       "found": 469,
+       "missed": 73,
+       "false": 108
+      },
+      "spur": {
+       "P": 0.933,
+       "R": 0.931,
+       "found": 513,
+       "missed": 38,
+       "false": 37
+      },
+      "spurious_copper": {
+       "P": 0.945,
+       "R": 0.945,
+       "found": 513,
+       "missed": 30,
+       "false": 30
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd": {
+     "P": 0.882,
+     "R": 0.372,
+     "found": 689,
+     "missed": 1161,
+     "false": 92,
+     "images": 993,
+     "images_flagged": 612,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.862,
+       "R": 0.627,
+       "found": 257,
+       "missed": 153,
+       "false": 41
+      },
+      "open_circuit": {
+       "P": 0.852,
+       "R": 0.392,
+       "found": 104,
+       "missed": 161,
+       "false": 18
+      },
+      "short": {
+       "P": 0.84,
+       "R": 0.627,
+       "found": 84,
+       "missed": 50,
+       "false": 16
+      },
+      "spur": {
+       "P": 0.918,
+       "R": 0.208,
+       "found": 169,
+       "missed": 642,
+       "false": 15
+      },
+      "spurious_copper": {
+       "P": 0.974,
+       "R": 0.326,
+       "found": 75,
+       "missed": 155,
+       "false": 2
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "dspcbsd_iou0.3": {
+     "P": 0.923,
+     "R": 0.39,
+     "found": 721,
+     "missed": 1129,
+     "false": 60,
+     "images": 993,
+     "images_flagged": 612,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.909,
+       "R": 0.661,
+       "found": 271,
+       "missed": 139,
+       "false": 27
+      },
+      "open_circuit": {
+       "P": 0.91,
+       "R": 0.419,
+       "found": 111,
+       "missed": 154,
+       "false": 11
+      },
+      "short": {
+       "P": 0.91,
+       "R": 0.679,
+       "found": 91,
+       "missed": 43,
+       "false": 9
+      },
+      "spur": {
+       "P": 0.94,
+       "R": 0.213,
+       "found": 173,
+       "missed": 638,
+       "false": 11
+      },
+      "spurious_copper": {
+       "P": 0.974,
+       "R": 0.326,
+       "found": 75,
+       "missed": 155,
+       "false": 2
+      },
+      "missing_pad": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      }
+     }
+    },
+    "real_pcbdefect": {
+     "P": 0.788,
+     "R": 0.609,
+     "found": 368,
+     "missed": 236,
+     "false": 99,
+     "images": 42,
+     "images_flagged": 42,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.821,
+       "R": 0.5,
+       "found": 128,
+       "missed": 128,
+       "false": 28
+      },
+      "open_circuit": {
+       "P": 0.982,
+       "R": 0.871,
+       "found": 54,
+       "missed": 8,
+       "false": 1
+      },
+      "short": {
+       "P": 0.87,
+       "R": 0.959,
+       "found": 47,
+       "missed": 2,
+       "false": 7
+      },
+      "spur": {
+       "P": 0.919,
+       "R": 0.519,
+       "found": 68,
+       "missed": 63,
+       "false": 6
+      },
+      "spurious_copper": {
+       "P": 0.81,
+       "R": 0.37,
+       "found": 17,
+       "missed": 29,
+       "false": 4
+      },
+      "missing_pad": {
+       "P": 0.505,
+       "R": 0.9,
+       "found": 54,
+       "missed": 6,
+       "false": 53
+      }
+     }
+    },
+    "real_pcbdefect_iou0.3": {
+     "P": 0.803,
+     "R": 0.621,
+     "found": 375,
+     "missed": 229,
+     "false": 92,
+     "images": 42,
+     "images_flagged": 42,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": 0.846,
+       "R": 0.516,
+       "found": 132,
+       "missed": 124,
+       "false": 24
+      },
+      "open_circuit": {
+       "P": 0.982,
+       "R": 0.871,
+       "found": 54,
+       "missed": 8,
+       "false": 1
+      },
+      "short": {
+       "P": 0.87,
+       "R": 0.959,
+       "found": 47,
+       "missed": 2,
+       "false": 7
+      },
+      "spur": {
+       "P": 0.919,
+       "R": 0.519,
+       "found": 68,
+       "missed": 63,
+       "false": 6
+      },
+      "spurious_copper": {
+       "P": 0.952,
+       "R": 0.435,
+       "found": 20,
+       "missed": 26,
+       "false": 1
+      },
+      "missing_pad": {
+       "P": 0.505,
+       "R": 0.9,
+       "found": 54,
+       "missed": 6,
+       "false": 53
+      }
+     }
+    },
+    "real_defectdet": {
+     "P": 0.641,
+     "R": 0.75,
+     "found": 159,
+     "missed": 53,
+     "false": 89,
+     "images": 44,
+     "images_flagged": 44,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.971,
+       "R": 0.75,
+       "found": 33,
+       "missed": 11,
+       "false": 1
+      },
+      "short": {
+       "P": 0.821,
+       "R": 0.711,
+       "found": 32,
+       "missed": 13,
+       "false": 7
+      },
+      "spur": {
+       "P": 0.889,
+       "R": 0.909,
+       "found": 40,
+       "missed": 4,
+       "false": 5
+      },
+      "spurious_copper": {
+       "P": 0.969,
+       "R": 0.705,
+       "found": 31,
+       "missed": 13,
+       "false": 1
+      },
+      "missing_pad": {
+       "P": 0.235,
+       "R": 0.657,
+       "found": 23,
+       "missed": 12,
+       "false": 75
+      }
+     }
+    },
+    "real_defectdet_iou0.3": {
+     "P": 0.657,
+     "R": 0.769,
+     "found": 163,
+     "missed": 49,
+     "false": 85,
+     "images": 44,
+     "images_flagged": 44,
+     "per_class": {
+      "missing_hole": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "mouse_bite": {
+       "P": null,
+       "R": null,
+       "found": 0,
+       "missed": 0,
+       "false": 0
+      },
+      "open_circuit": {
+       "P": 0.971,
+       "R": 0.75,
+       "found": 33,
+       "missed": 11,
+       "false": 1
+      },
+      "short": {
+       "P": 0.872,
+       "R": 0.756,
+       "found": 34,
+       "missed": 11,
+       "false": 5
+      },
+      "spur": {
+       "P": 0.933,
+       "R": 0.955,
+       "found": 42,
+       "missed": 2,
+       "false": 3
+      },
+      "spurious_copper": {
+       "P": 0.969,
+       "R": 0.705,
+       "found": 31,
+       "missed": 13,
+       "false": 1
+      },
+      "missing_pad": {
+       "P": 0.235,
+       "R": 0.657,
+       "found": 23,
+       "missed": 12,
+       "false": 75
+      }
+     }
+    },
+    "green_clean": {
+     "images": 37,
+     "images_with_false_alarm": 0,
+     "false_boxes": 0,
+     "by_class": {}
+    },
+    "phone_clean": {
+     "images": 82,
+     "images_with_false_alarm": 0,
+     "false_boxes": 0,
+     "by_class": {}
+    }
+   }
+  }
+ }
+}

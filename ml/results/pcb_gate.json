@@ -1,0 +1,31 @@
+{
+  "test_images": 891,
+  "pcb": 507,
+  "not_pcb": 384,
+  "accuracy": 0.9742,
+  "pcb_recall": 0.9803,
+  "not_pcb_recall": 0.9661,
+  "pcb_missed_as_not_pcb": 10,
+  "non_pcb_accepted_as_pcb": 13,
+  "threshold": 0.5,
+  "negatives_used": 233,
+  "phone_frames": 71,
+  "real_phone_check": {
+    "real_board_frames": 17,
+    "real_board_accepted": 17,
+    "real_background_frames": 15,
+    "real_background_rejected": 15
+  },
+  "real_board_train_frames": 65,
+  "note": "Test PCBs are unseen boards 10-12 (scans, desk composites, close-ups) and the last 20 % of the real-board clip; negatives held out.",
+  "board_map": {
+    "test_images": 352,
+    "cell_accuracy": 0.9139,
+    "median_box_iou": 0.9,
+    "board_fully_inside_box": 0.829,
+    "note": "10x10 map at 320 px; the app pads the box by one cell before tiling.",
+    "synthetic_board_inside_padded_box": 0.972,
+    "real_board_inside_padded_box": "48/51"
+  },
+  "pte_mb": 4.49
+}

@@ -1,0 +1,210 @@
+{
+ "search": 0.04,
+ "pad": 0.6,
+ "work_px": 1000,
+ "results": {
+  "off": {
+   "pku_boards": {
+    "P": 0.722,
+    "R": 0.95,
+    "found": 363,
+    "missed": 19,
+    "false": 140,
+    "short_P": 0.364,
+    "short_R": 0.902
+   },
+   "real_pcbdefect": {
+    "P": 0.864,
+    "R": 0.623,
+    "found": 376,
+    "missed": 228,
+    "false": 59,
+    "short_P": 0.887,
+    "short_R": 0.959
+   },
+   "real_defectdet": {
+    "P": 0.872,
+    "R": 0.736,
+    "found": 156,
+    "missed": 56,
+    "false": 23,
+    "short_P": 0.886,
+    "short_R": 0.689
+   }
+  },
+  "T=0.95": {
+   "pku_boards": {
+    "P": 0.854,
+    "R": 0.935,
+    "found": 357,
+    "missed": 25,
+    "false": 61,
+    "short_P": 0.637,
+    "short_R": 0.836
+   },
+   "real_pcbdefect": {
+    "P": 0.864,
+    "R": 0.623,
+    "found": 376,
+    "missed": 228,
+    "false": 59,
+    "short_P": 0.887,
+    "short_R": 0.959
+   },
+   "real_defectdet": {
+    "P": 0.884,
+    "R": 0.722,
+    "found": 153,
+    "missed": 59,
+    "false": 20,
+    "short_P": 0.912,
+    "short_R": 0.689
+   }
+  },
+  "T=0.9": {
+   "pku_boards": {
+    "P": 0.889,
+    "R": 0.859,
+    "found": 328,
+    "missed": 54,
+    "false": 41,
+    "short_P": 0.729,
+    "short_R": 0.574
+   },
+   "real_pcbdefect": {
+    "P": 0.864,
+    "R": 0.623,
+    "found": 376,
+    "missed": 228,
+    "false": 59,
+    "short_P": 0.887,
+    "short_R": 0.959
+   },
+   "real_defectdet": {
+    "P": 0.895,
+    "R": 0.722,
+    "found": 153,
+    "missed": 59,
+    "false": 18,
+    "short_P": 0.912,
+    "short_R": 0.689
+   }
+  },
+  "T=0.85": {
+   "pku_boards": {
+    "P": 0.895,
+    "R": 0.717,
+    "found": 274,
+    "missed": 108,
+    "false": 32,
+    "short_P": 0.63,
+    "short_R": 0.279
+   },
+   "real_pcbdefect": {
+    "P": 0.864,
+    "R": 0.623,
+    "found": 376,
+    "missed": 228,
+    "false": 59,
+    "short_P": 0.887,
+    "short_R": 0.959
+   },
+   "real_defectdet": {
+    "P": 0.912,
+    "R": 0.689,
+    "found": 146,
+    "missed": 66,
+    "false": 14,
+    "short_P": 0.964,
+    "short_R": 0.6
+   }
+  },
+  "T=0.8": {
+   "pku_boards": {
+    "P": 0.899,
+    "R": 0.513,
+    "found": 196,
+    "missed": 186,
+    "false": 22,
+    "short_P": 0.5,
+    "short_R": 0.164
+   },
+   "real_pcbdefect": {
+    "P": 0.866,
+    "R": 0.619,
+    "found": 374,
+    "missed": 230,
+    "false": 58,
+    "short_P": 0.887,
+    "short_R": 0.959
+   },
+   "real_defectdet": {
+    "P": 0.932,
+    "R": 0.642,
+    "found": 136,
+    "missed": 76,
+    "false": 10,
+    "short_P": 1.0,
+    "short_R": 0.489
+   }
+  },
+  "T=0.75": {
+   "pku_boards": {
+    "P": 0.891,
+    "R": 0.322,
+    "found": 123,
+    "missed": 259,
+    "false": 15,
+    "short_P": 0.471,
+    "short_R": 0.131
+   },
+   "real_pcbdefect": {
+    "P": 0.874,
+    "R": 0.611,
+    "found": 369,
+    "missed": 235,
+    "false": 53,
+    "short_P": 0.887,
+    "short_R": 0.959
+   },
+   "real_defectdet": {
+    "P": 0.922,
+    "R": 0.561,
+    "found": 119,
+    "missed": 93,
+    "false": 10,
+    "short_P": 1.0,
+    "short_R": 0.311
+   }
+  },
+  "T=0.7": {
+   "pku_boards": {
+    "P": 0.851,
+    "R": 0.194,
+    "found": 74,
+    "missed": 308,
+    "false": 13,
+    "short_P": 0.471,
+    "short_R": 0.131
+   },
+   "real_pcbdefect": {
+    "P": 0.873,
+    "R": 0.594,
+    "found": 359,
+    "missed": 245,
+    "false": 52,
+    "short_P": 0.887,
+    "short_R": 0.959
+   },
+   "real_defectdet": {
+    "P": 0.921,
+    "R": 0.495,
+    "found": 105,
+    "missed": 107,
+    "false": 9,
+    "short_P": 1.0,
+    "short_R": 0.244
+   }
+  }
+ }
+}

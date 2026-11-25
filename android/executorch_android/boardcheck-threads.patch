@@ -1,0 +1,182 @@
+diff --git a/extension/android/jni/jni_layer_llama.cpp b/extension/android/jni/jni_layer_llama.cpp
+index b9215f9..495baf5 100644
+--- a/extension/android/jni/jni_layer_llama.cpp
++++ b/extension/android/jni/jni_layer_llama.cpp
+@@ -8,6 +8,7 @@
+ 
+ #include <chrono>
+ #include <cstdint>
++#include <cstdlib>
+ #include <cstring>
+ #include <memory>
+ #include <sstream>
+@@ -157,6 +158,16 @@ class ExecuTorchLlmJni : public facebook::jni::HybridClass<ExecuTorchLlmJni> {
+       // Reserve 1 thread for the main thread.
+       int32_t num_performant_cores =
+           ::executorch::extension::cpuinfo::get_num_performant_cores() - 1;
++      // BoardCheck patch: on chips with only 2 big cores (e.g. Dimensity 7200,
++      // 2x A715 + 6x A510) the default above leaves Llama a single thread.
++      // Let the app choose the count with EXECUTORCH_NUM_THREADS (set via
++      // android.system.Os.setenv before creating LlmModule).
++      if (const char* env = std::getenv("EXECUTORCH_NUM_THREADS")) {
++        const int requested = std::atoi(env);
++        if (requested > 0) {
++          num_performant_cores = requested;
++        }
++      }
+       if (num_performant_cores > 0) {
+         ET_LOG(
+             Info, "Resetting threadpool to %d threads", num_performant_cores);
+@@ -573,6 +584,30 @@ class ExecuTorchLlmJni : public facebook::jni::HybridClass<ExecuTorchLlmJni> {
+     }
+   }
+ 
++  // BoardCheck patch: prefix cache + per-phase thread count.
++  jlong position() {
++    return runner_ ? static_cast<jlong>(runner_->position()) : -1;
++  }
++
++  jboolean rewind(jlong pos) {
++    return runner_ && runner_->set_position(static_cast<int64_t>(pos));
++  }
++
++  // One XNNPACK thread pool is shared by every model in the process. Prompt
++  // prefill (compute-bound) scales to 6 cores, token decode (memory-bound) is
++  // fastest on the 2 big cores, so the app resizes the pool between phases.
++  // Only call it while no model is running.
++  jint set_threads(jint n) {
++    auto threadpool = ::executorch::extension::threadpool::get_threadpool();
++    if (!threadpool || n <= 0) {
++      return -1;
++    }
++    if (threadpool->get_thread_count() != static_cast<size_t>(n)) {
++      threadpool->_unsafe_reset_threadpool(static_cast<uint32_t>(n));
++    }
++    return static_cast<jint>(threadpool->get_thread_count());
++  }
++
+   void reset_context() {
+     if (runner_) {
+       runner_->reset();
+@@ -626,6 +661,9 @@ class ExecuTorchLlmJni : public facebook::jni::HybridClass<ExecuTorchLlmJni> {
+         makeNativeMethod(
+             "prefillTextInput", ExecuTorchLlmJni::prefill_text_input),
+         makeNativeMethod("resetContextNative", ExecuTorchLlmJni::reset_context),
++        makeNativeMethod("positionNative", ExecuTorchLlmJni::position),
++        makeNativeMethod("rewindNative", ExecuTorchLlmJni::rewind),
++        makeNativeMethod("setThreadsNative", ExecuTorchLlmJni::set_threads),
+     });
+   }
+ };
+diff --git a/extension/llm/runner/irunner.h b/extension/llm/runner/irunner.h
+index 19a829d..cfdfb95 100644
+--- a/extension/llm/runner/irunner.h
++++ b/extension/llm/runner/irunner.h
+@@ -174,6 +174,15 @@ class ET_EXPERIMENTAL IRunner {
+    * start position to 0.
+    */
+   virtual void reset() = 0;
++
++  // BoardCheck patch: KV-cache position, so a fixed system prompt can be
++  // prefilled once and reused (prefix cache). Default: not supported.
++  virtual int64_t position() const {
++    return -1;
++  }
++  virtual bool set_position(int64_t /*pos*/) {
++    return false;
++  }
+ };
+ 
+ } // namespace llm
+diff --git a/extension/llm/runner/text_llm_runner.h b/extension/llm/runner/text_llm_runner.h
+index 195348a..45558ce 100644
+--- a/extension/llm/runner/text_llm_runner.h
++++ b/extension/llm/runner/text_llm_runner.h
+@@ -163,6 +163,20 @@ class ET_EXPERIMENTAL TextLLMRunner : public IRunner {
+    */
+   void stop() override;
+ 
++  // BoardCheck patch: prefix cache. Entries after `pos` are overwritten by the
++  // next prefill; attention only reads positions below the current one.
++  int64_t position() const override {
++    return pos_;
++  }
++  bool set_position(int64_t pos) override {
++    if (pos < 0 || pos > pos_) {
++      return false;
++    }
++    pos_ = pos;
++    prefill_next_token_.reset();
++    return true;
++  }
++
+  private:
+   // Components
+   std::unique_ptr<::tokenizers::Tokenizer> tokenizer_;
+diff --git a/extension/threadpool/threadpool.cpp b/extension/threadpool/threadpool.cpp
+index 036a6c1..6e900e4 100644
+--- a/extension/threadpool/threadpool.cpp
++++ b/extension/threadpool/threadpool.cpp
+@@ -9,6 +9,8 @@
+ #include <executorch/extension/threadpool/cpuinfo_utils.h>
+ #include <executorch/extension/threadpool/threadpool.h>
+ 
++#include <cstdlib>
++
+ #include <algorithm>
+ #include <memory>
+ 
+@@ -54,7 +56,8 @@ void child_atfork() {
+ ThreadPool::ThreadPool(size_t thread_count)
+     : threadpool_(pthreadpool_create(thread_count), pthreadpool_destroy),
+       thread_count_(
+-          threadpool_ ? pthreadpool_get_threads_count(threadpool_.get()) : 0) {}
++          threadpool_ ? pthreadpool_get_threads_count(threadpool_.get()) : 0),
++      max_thread_count_(thread_count_) {}
+ 
+ size_t ThreadPool::get_thread_count() const {
+   std::lock_guard<std::mutex> lock{mutex_};
+@@ -72,9 +75,28 @@ bool ThreadPool::_unsafe_reset_threadpool(uint32_t new_thread_count) {
+ 
+   std::lock_guard<std::mutex> lock{mutex_};
+ 
+-  threadpool_.reset(pthreadpool_create(new_thread_count));
+-  thread_count_ =
++  // BoardCheck patch: XNNPACK runtimes keep the pthreadpool pointer they were
++  // created with, so destroying the pool while models are loaded leaves them
++  // pointing at freed memory. Create the pool ONCE, as large as
++  // EXECUTORCH_MAX_THREADS allows, and afterwards only change how many of its
++  // threads are used (pthreadpool_set_threads_count keeps the pool alive).
++  if (threadpool_ && new_thread_count <= max_thread_count_) {
++    thread_count_ = pthreadpool_set_threads_count(threadpool_.get(), new_thread_count);
++    return true;
++  }
++  uint32_t create = new_thread_count;
++  if (const char* env = std::getenv("EXECUTORCH_MAX_THREADS")) {
++    const int m = std::atoi(env);
++    if (m > 0 && static_cast<uint32_t>(m) > create) {
++      create = static_cast<uint32_t>(m);
++    }
++  }
++  threadpool_.reset(pthreadpool_create(create));
++  max_thread_count_ =
+       threadpool_ ? pthreadpool_get_threads_count(threadpool_.get()) : 0;
++  thread_count_ = threadpool_
++      ? pthreadpool_set_threads_count(threadpool_.get(), new_thread_count)
++      : 0;
+   return true;
+ }
+ 
+diff --git a/extension/threadpool/threadpool.h b/extension/threadpool/threadpool.h
+index 6a22cd2..b524a3f 100644
+--- a/extension/threadpool/threadpool.h
++++ b/extension/threadpool/threadpool.h
+@@ -112,6 +112,8 @@ class ThreadPool final {
+   std::unique_ptr<pthreadpool, decltype(&pthreadpool_destroy)> threadpool_;
+   // The number of threads in the threadpool.
+   size_t thread_count_;
++  // BoardCheck patch: threads the pool was created with (upper bound for set_threads_count).
++  size_t max_thread_count_ = 0;
+ };
+ 
+ /**

@@ -1,0 +1,71 @@
+{
+ "yellow": [
+  {
+   "board": "pcbd_50-1-1",
+   "true_defects": 12,
+   "found": 11,
+   "missed": 1,
+   "false_alarms": 0,
+   "verdict": "reject",
+   "items": [
+    "missing_pad 0.87",
+    "short 0.77",
+    "open_circuit 0.72",
+    "mouse_bite 0.69",
+    "spur 0.71",
+    "spur 0.66",
+    "spurious_copper 0.66",
+    "spur 0.52",
+    "spur 0.51",
+    "spur 0.49",
+    "spur 0.44"
+   ],
+   "golden": false,
+   "golden_hidden": 0,
+   "phone_detect_ms": 6074,
+   "phone_total_ms": 21145,
+   "tiles": 12,
+   "ms_per_tile": 426,
+   "advice_source": "llama",
+   "llama_tok_s": 0,
+   "temp_c": 39,
+   "thermal": 3,
+   "quality": null,
+   "advice": "The worst defect is missing_pad, where the component cannot be soldered at that point. The most likely cause is over-etching."
+  },
+  {
+   "board": "pcbd_50-1-2",
+   "true_defects": 36,
+   "found": 7,
+   "missed": 29,
+   "false_alarms": 0,
+   "verdict": "reject",
+   "items": [
+    "missing_pad 0.90",
+    "short 0.77",
+    "open_circuit 0.71",
+    "mouse_bite 0.67",
+    "spur 0.75",
+    "spur 0.36",
+    "spur 0.32"
+   ],
+   "golden": false,
+   "golden_hidden": 0,
+   "phone_detect_ms": 4656,
+   "phone_total_ms": 16929,
+   "tiles": 12,
+   "ms_per_tile": 369,
+   "advice_source": "llama",
+   "llama_tok_s": 5.1,
+   "temp_c": 39,
+   "thermal": 3,
+   "quality": null,
+   "advice": "The worst defect is missing_pad, where the component cannot be soldered at that point."
+  }
+ ],
+ "golden_warning": {
+  "type": "golden",
+  "set": false,
+  "warning": "This board had 7 findings. The golden reference must be a known-good board: a real defect on it would hide the same defect on other boards. Choose it again within 10 s to save anyway."
+ }
+}

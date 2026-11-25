@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BoardCheck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/product.css">
+<link rel="stylesheet" href="css/console.css">
+<link rel="stylesheet" href="css/ui.css">
+</head>
+<body>
+
+<div id="toast" class="toast" role="status" hidden></div>
+
+<!-- ======================= Start screen ======================= -->
+<div id="site" class="start">
+  <div class="start-wrap">
+    <div class="start-left">
+      <div class="logo"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BoardCheck</div>
+      <p class="eyebrow">On-device PCB inspection</p>
+      <h1 class="serif start-title">Every board,<br><em>checked in seconds.</em></h1>
+      <p class="start-sub">A phone on a stand finds the defect. Llama tells your operator how to fix it. Nothing leaves the factory floor.</p>
+      <div class="start-chips"><span><i data-lucide="cpu"></i>Arm CPU · ExecuTorch</span><span><i data-lucide="scan-search"></i>YOLO11n</span><span><i data-lucide="sparkles"></i>Llama 3.2 1B</span><span><i data-lucide="wifi-off"></i>Offline</span></div>
+
+      <form id="login-form" class="start-form" novalidate>
+        <div class="start-fields">
+          <label>Operator name<input id="op-name" autocomplete="name" placeholder="Your name"></label>
+          <label>PIN<input id="op-pin" inputmode="numeric" maxlength="6" type="password" placeholder="4 to 6 digits"></label>
+        </div>
+        <p id="login-error" class="error" role="alert"></p>
+        <button class="btn btn-primary btn-wide btn-big" type="submit">Open inspector <span aria-hidden="true">→</span></button>
+      </form>
+      <div id="start-continue" class="start-form" hidden>
+        <a href="#/inspect" class="btn btn-primary btn-wide btn-big">Open inspector <span aria-hidden="true">→</span></a>
+        <p class="tiny muted"><span id="hello-op">Signed in</span> · <button class="link tiny" data-logout type="button">Switch operator</button></p>
+      </div>
+
+      <div class="start-phone">
+        <button class="pill-status" id="nav-status" type="button"><span class="dot"></span><span>No phone</span></button>
+        <div class="conn-state" id="conn-state" hidden><span class="dot"></span><span>Waiting for phone…</span></div>
+        <span class="tiny muted" id="bridge-note"></span>
+      </div>
+      <div id="connect" class="start-connect" hidden>
+        <div id="qr" class="qr small"></div>
+        <div>
+          <p class="tiny"><b>Pair the phone:</b> in the BoardCheck app tap <b>Connect → Pair with laptop QR</b>, or <b>USB link</b> when the cable is in.</p>
+          <code class="tiny" id="qr-url">—</code>
+          <div class="start-stats tiny muted">Live <b id="s-fps">—</b> fps · YOLO <b id="s-lat">—</b> ms · Llama <b id="s-tps">—</b> tok/s · <b id="s-bat">—</b>% · <b id="s-temp">—</b>°C</div>
+          <div class="cta-row left"><button class="btn btn-sm" data-demo type="button">Use demo phone</button><button class="btn btn-sm" id="btn-disconnect" type="button" hidden>Disconnect demo</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="start-right" aria-hidden="true">
+      <div class="hero-board">
+        <canvas id="hero-canvas" width="960" height="640"></canvas>
+        <div class="scanline"></div>
+        <div id="hero-boxes"></div>
+        <div class="hero-bubble"><span class="bubble-tag">Llama · on phone</span><p id="hero-bubble-text">Reject. Short near U2 bridges two traces. Remove the bridge and re-test continuity.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= App ======================= -->
+<div id="app" class="app" hidden>
+  <aside class="sidebar">
+    <a class="logo" href="#/"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BoardCheck</a>
+    <nav class="side-nav">
+      <a href="#/inspect" data-route="/inspect"><i data-lucide="scan-search"></i><span>Inspect</span></a>
+      <a href="#/verify" data-route="/verify"><i data-lucide="shield-check"></i><span>Verify</span><span class="count" id="nav-queue" hidden>0</span></a>
+      <a href="#/insights" data-route="/insights"><i data-lucide="chart-column"></i><span>Insights</span></a>
+      <a href="#/log" data-route="/log"><i data-lucide="list"></i><span>Log</span></a>
+      <a href="#/settings" data-route="/settings"><i data-lucide="settings"></i><span>Settings</span></a>
+      <a href="#/about" data-route="/about"><i data-lucide="info"></i><span>About</span></a>
+    </nav>
+    <div class="side-foot">
+      <a href="#/settings" class="side-phone" id="side-phone"><span class="dot"></span><div><b>No phone</b><span class="tiny">Connect in Settings</span></div></a>
+      <div class="side-user"><span class="avatar" id="side-avatar">?</span><div><b id="side-name">—</b><button class="link tiny" data-logout>Sign out</button></div></div>
+    </div>
+  </aside>
+
+  <div class="app-main" data-lenis-prevent>
+    <header class="topbar">
+      <div class="tb-left"><p class="tb-crumb" id="tb-eyebrow">Inspect</p><h1 class="tb-title" id="tb-title">Live inspection</h1></div>
+      <div class="kpis" aria-label="Live device stats">
+        <div class="kpi" title="Live YOLO detections per second on the phone"><i data-lucide="camera"></i><span>Live YOLO</span><b id="k-fps">—</b><em>fps</em></div>
+        <div class="kpi"><i data-lucide="scan-search"></i><span>YOLO</span><b id="k-yolo">—</b><em>ms/tile</em></div>
+        <div class="kpi"><i data-lucide="sparkles"></i><span>Llama</span><b id="k-llm">—</b><em>tok/s</em></div>
+        <div class="kpi"><i data-lucide="battery-medium"></i><span>Phone</span><b id="k-bat">—</b><em id="k-temp"></em></div>
+      </div>
+      <div class="tb-right">
+        <a href="#/" class="btn btn-sm btn-quiet"><i data-lucide="home"></i>Start</a>
+      </div>
+    </header>
+
+    <!-- Inspect -->
+    <section id="view-inspect" class="aview console" hidden>
+      <div class="insp">
+        <!-- Left: camera / result image and controls -->
+        <div class="insp-left">
+          <div id="i-alerts"></div>
+          <div class="insp-video panel-c"><div id="inspect-video-host" class="video-host"></div></div>
+          <div class="insp-bar panel-c">
+            <button class="btn btn-primary btn-inspect" id="btn-next"><i data-lucide="scan-line"></i>Inspect board<kbd>N</kbd></button>
+            <button class="btn btn-quiet" id="btn-pause"><i data-lucide="pause"></i>Pause</button>
+            <input id="i-override" class="id-input" placeholder="Board ID (optional, else QR)" aria-label="Board ID">
+            <span class="tb-grow"></span>
+            <details class="opts">
+              <summary class="btn btn-quiet" aria-label="Options"><i data-lucide="sliders-horizontal"></i>Options</summary>
+              <div class="opts-menu">
+                <label class="toggle"><input type="checkbox" id="t-why"><span>Show model attention</span></label>
+                <label class="toggle"><input type="checkbox" id="t-auto"><span>Auto-inspect next board</span></label>
+                <button class="btn btn-quiet btn-sm" id="btn-golden" title="Use the current frame as the reference good board"><i data-lucide="star"></i>Set golden board</button>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <!-- Right: verdict, advice, defects (fixed sizes; placeholders when empty) -->
+        <aside class="insp-right">
+          <div class="card-verdict panel-c">
+            <div class="cv-top">
+              <div><span class="field-label">Board</span>
+                <div class="id-row"><span class="id-big" id="i-board">—</span><span class="chip" id="i-idsrc" hidden></span></div></div>
+              <div class="verdict" id="verdict" data-v="idle">Waiting</div>
+            </div>
+            <p id="i-reason" class="cv-reason">Press <b>Inspect board</b> or <kbd>N</kbd> to check the board under the phone.</p>
+            <p id="i-perf" class="i-perf"></p>
+          </div>
+
+          <div class="advice-card panel-c">
+            <div class="advice-head"><span class="advice-title"><i data-lucide="sparkles"></i>What to do</span><span class="state-pill" id="advice-state">idle</span></div>
+            <div id="advice" class="advice-text"><p class="ph">Llama's advice appears here after an inspection: the worst defect, the repair steps and the likely cause.</p></div>
+            <div id="advice-meta" class="advice-meta"></div>
+          </div>
+
+          <div class="card-defects panel-c">
+            <div class="col-head"><span class="field-label">Defects on this board</span><span class="count-pill" id="d-count"></span></div>
+            <div id="defect-list" class="defect-list" data-lenis-prevent>
+              <p class="ph">No board inspected yet. Each defect will be listed here with its severity and location. Click a row to see it up close.</p>
+            </div>
+            <p class="tiny muted" id="suppressed"></p>
+            <div class="side-foot-actions">
+              <span class="kbd-hint" id="kbd-hint"><kbd>C</kbd> confirm <kbd>F</kbd> false call</span>
+              <button class="btn btn-primary" id="btn-send" hidden><i data-lucide="wrench"></i>Send to rework</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Verify -->
+    <section id="view-verify" class="aview" hidden>
+      <div class="verify-grid">
+        <aside class="queue">
+          <p class="eyebrow">Rework queue</p>
+          <ul id="queue" class="queue-list"></ul>
+          <p class="eyebrow done-label">Recently released</p>
+          <ul id="released" class="queue-list done"></ul>
+        </aside>
+        <div class="verify-main" id="verify-main"></div>
+      </div>
+    </section>
+
+    <!-- Insights -->
+    <section id="view-insights" class="aview" hidden>
+      <div class="tiles light">
+        <div class="tile"><p class="eyebrow">Boards inspected</p><p class="tile-v" id="t-count">0</p><p class="tile-sub" id="t-count-sub">No inspections yet</p></div>
+        <div class="tile"><p class="eyebrow">Rejected</p><p class="tile-v" id="t-reject">0%</p><p class="tile-sub" id="t-reject-sub"></p></div>
+        <div class="tile"><p class="eyebrow">False calls</p><p class="tile-v" id="t-false">—</p><p class="tile-sub" id="t-false-sub">Detections the operator marked as wrong</p></div>
+        <div class="tile"><p class="eyebrow">Fixed on first re-check</p><p class="tile-v" id="t-ftf">—</p><p class="tile-sub" id="t-ftf-sub">Repaired boards that passed the first re-check</p></div>
+      </div>
+
+      <div class="chart-card wide alerts-card">
+        <p class="chart-title">Process alerts</p>
+        <p class="q-sub">Same defect on 3 of the last 5 boards = check the process.</p>
+        <div id="proc-alerts" class="proc-alerts"></div>
+      </div>
+      <div class="chart-card wide">
+        <div class="q-head"><div><p class="chart-title">Results</p></div></div>
+        <div class="outcomes">
+          <div class="oc pass"><span class="oc-n" id="o-pass">0</span><span class="oc-l">Pass</span><span class="oc-p" id="o-pass-p"></span></div>
+          <div class="oc rework"><span class="oc-n" id="o-rework">0</span><span class="oc-l">Rework</span><span class="oc-p" id="o-rework-p"></span></div>
+          <div class="oc reject"><span class="oc-n" id="o-reject">0</span><span class="oc-l">Reject</span><span class="oc-p" id="o-reject-p"></span></div>
+        </div>
+        <div class="stackbar" id="o-bar"><i class="pass"></i><i class="rework"></i><i class="reject"></i></div>
+        <p class="q-sub strip-label">Each square = one board (oldest first)</p>
+        <div class="board-strip-row" id="o-strip"></div>
+      </div>
+
+      <div class="charts three">
+        <div class="chart-card"><p class="chart-title">Most common defects</p><div class="chart-box"><canvas id="c-types"></canvas></div><div class="big-empty small" id="types-empty"><i data-lucide="bar-chart-3"></i><p>No defects yet</p></div></div>
+        <div class="chart-card"><p class="chart-title">Severity</p><div class="big-empty small" id="sev-empty"><i data-lucide="pie-chart"></i><p>No defects yet</p></div>
+          <div class="sev-wrap"><div class="chart-box sev-box"><canvas id="c-sev"></canvas><div class="sev-center"><b id="sev-total">0</b><span>defects</span></div></div><ul class="sev-legend" id="sev-legend"></ul></div></div>
+        <div class="chart-card"><p class="chart-title">Where defects appear</p>
+          <div class="heat-wrap"><canvas id="c-heat" width="600" height="400"></canvas></div>
+          <div class="heat-legend"><span>few</span><i></i><span>many</span><b id="heat-max"></b></div></div>
+      </div>
+      <div class="feedback-card">
+        <div>
+          <p class="chart-title">Operator feedback for the model</p>
+          <p class="tiny muted">Your ✓ / ✕ reviews, saved for retraining.</p>
+          <ul class="thr-list" id="thr-list"></ul>
+        </div>
+        <div class="fb-side"><p class="tile-v fb-n" id="fb-count">0</p><p class="tiny muted">labelled samples</p><button class="btn btn-primary" id="btn-fb">Export for retraining</button></div>
+      </div>
+    </section>
+
+    <!-- Log -->
+    <section id="view-log" class="aview" hidden>
+      <div class="log-stats" id="log-stats"></div>
+      <div class="log-tools bar">
+        <input id="f-q" class="id-input" placeholder="Search board ID or operator" aria-label="Search">
+        <select id="f-verdict" aria-label="Filter by verdict"><option value="">All verdicts</option><option value="pass">Pass</option><option value="rework">Rework</option><option value="reject">Reject</option></select>
+        <select id="f-status" aria-label="Filter by status"><option value="">All statuses</option><option value="passed">Passed</option><option value="awaiting_fix">Awaiting fix</option><option value="back_to_rework">Back to rework</option><option value="released">Released</option></select>
+        <select id="f-type" aria-label="Filter by defect"><option value="">All defects</option></select>
+        <span class="tb-grow"></span>
+        <button class="btn btn-primary" id="btn-csv"><i data-lucide="download"></i>Export CSV</button>
+      </div>
+      <div class="table-wrap panel-c log-full">
+        <table class="log-table v2">
+          <thead><tr>
+            <th data-sort="t">Time</th><th data-sort="boardId">Board</th><th data-sort="verdict">Verdict</th><th data-sort="n" class="nr">Defects</th>
+            <th>Defect types</th><th data-sort="source">Advice by</th><th data-sort="detectMs" class="nr">Verdict time</th><th data-sort="ms" class="nr">Total time</th>
+            <th data-sort="op">Operator</th><th data-sort="status">Status</th><th></th></tr></thead>
+          <tbody id="log-body"></tbody>
+        </table>
+        <div class="big-empty" id="log-empty"><i data-lucide="list"></i><p>No inspections yet</p><span>Every inspected board appears here as one row.</span></div>
+      </div>
+    </section>
+
+    <!-- Board detail (from the log) -->
+    <section id="view-board" class="aview" hidden>
+      <a href="#/log" class="btn btn-quiet back-btn"><i data-lucide="arrow-left"></i>Back to log</a>
+      <div id="board-detail" class="bd"></div>
+    </section>
+
+    <!-- Settings -->
+    <section id="view-settings" class="aview" hidden>
+      <div class="set-grid">
+        <div class="set-card">
+          <p class="chart-title">Phone</p>
+          <div class="set-phone"><div id="qr2" class="qr small"></div>
+            <div><div class="conn-state" id="conn-state2"><span class="dot"></span><span>Waiting for phone…</span></div>
+              <code class="tiny" id="qr-url2">—</code>
+              <p class="tiny muted">Scan with the BoardCheck phone app.</p>
+              <div class="cta-row left"><button class="btn btn-primary btn-sm" data-demo>Use demo phone</button></div></div></div>
+        </div>
+        <div class="set-card">
+          <p class="chart-title">Models on the phone</p>
+          <dl class="kv" id="set-model"><dt>Vision</dt><dd>—</dd><dt>Advisor</dt><dd>—</dd></dl>
+          <p class="tiny muted">Reported by the phone when it connects. Stored with every inspection.</p>
+        </div>
+        <div class="set-card wide">
+          <p class="chart-title">Detection thresholds</p>
+          <p class="tiny muted">Detections below a threshold are hidden. False calls raise these automatically; you can also set them here.</p>
+          <div id="thr-sliders" class="thr-sliders"></div>
+        </div>
+        <div class="set-card wide">
+          <p class="chart-title">Data on this laptop</p>
+          <p class="tiny muted">The log, feedback samples and thresholds are stored in this browser only.</p>
+          <div class="cta-row left"><button class="btn btn-sm" id="btn-csv2"><i data-lucide="download"></i>Export log</button><button class="btn btn-sm" id="btn-fb2"><i data-lucide="download"></i>Export feedback</button><button class="btn btn-sm danger" id="btn-clear"><i data-lucide="trash-2"></i>Clear all data</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="view-about" class="aview" hidden>
+      <div class="about">
+        <div class="about-card panel-c wide">
+          <p class="chart-title">How BoardCheck works</p>
+          <ol class="flow">
+            <li><b>Camera</b><span>Phone on a stand. Live YOLO on the centre of every frame shows defects while you aim.</span></li>
+            <li><b>PCB check</b><span>A small model confirms a circuit board is in view, so an empty table never reads as Pass.</span></li>
+            <li><b>Detect</b><span>YOLO11n (FP16) scans the full 1920 px photo in 16 overlapping 640 px tiles.</span></li>
+            <li><b>Decide</b><span>Fixed rules give Pass / Rework / Reject from defect severity, shown straight away.</span></li>
+            <li><b>Advise</b><span>Llama 3.2 1B writes the summary and likely cause; repair steps come from the repair guide; a grounding check verifies Llama's text.</span></li>
+            <li><b>Log &amp; verify</b><span>Every board is logged; repaired boards are re-scanned and released only when the defect is gone.</span></li>
+          </ol>
+        </div>
+        <div class="about-card panel-c">
+          <p class="chart-title">Runs on the phone</p>
+          <dl class="kv">
+            <dt>Device</dt><dd>Nothing Phone (2a) · MediaTek Dimensity 7200 · 2× Cortex-A715 + 6× Cortex-A510</dd>
+            <dt>Runtime</dt><dd>ExecuTorch · XNNPACK · KleidiAI kernels · 2 threads on the big cores</dd>
+            <dt>Vision</dt><dd>YOLO11n, FP16, 640 px tiles</dd>
+            <dt>Advisor</dt><dd>Llama 3.2 1B Instruct, 4-bit (8da4w), prefix KV cache</dd>
+            <dt>Network</dt><dd>None needed. The laptop only shows results.</dd>
+          </dl>
+        </div>
+        <div class="about-card panel-c">
+          <p class="chart-title">Defects it knows</p>
+          <ul class="sev-key">
+            <li><span class="tchip sev-high">Critical</span> Short, Open circuit → reject</li>
+            <li><span class="tchip sev-medium">Major</span> Missing hole, Mouse bite → rework</li>
+            <li><span class="tchip sev-low">Minor</span> Spur, Spurious copper → rework or accept</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer class="appbar">
+      <span class="ab-item" id="ab-link"><span class="dot"></span>No phone</span>
+      <span class="ab-item"><i data-lucide="cpu"></i>ExecuTorch · Arm CPU on phone</span>
+      <span class="ab-item"><i data-lucide="wifi-off"></i>Offline: no cloud</span>
+      <span class="ab-grow"></span>
+      <span class="ab-item ab-model" id="i-model">No phone connected</span>
+    </footer>
+  </div>
+</div>
+
+<!-- Shared live video (moved between Inspect and Verify) -->
+<div class="video-frame" id="video-frame" hidden>
+  <canvas id="live-canvas" width="1280" height="853"></canvas>
+  <div class="video-hud">
+    <span class="badge-live" id="live-badge"><span class="dot"></span>Offline</span>
+    <span class="tiny hud-chip" id="live-board">—</span>
+  </div>
+  <div class="video-empty" id="video-empty">
+    <p class="serif">No video yet.</p>
+    <p class="tiny">Connect the phone, or try the demo phone.</p>
+    <div class="cta-row"><button class="btn btn-primary" data-demo>Use demo phone</button><a class="btn btn-ghost-light" href="#/settings">Connect phone</a></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/lucide@0.441.0/dist/umd/lucide.min.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

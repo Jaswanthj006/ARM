@@ -1,0 +1,90 @@
+{
+  "device": "A142",
+  "soc": "MT6886",
+  "runs": [
+    {
+      "tag": "default",
+      "threads": 6,
+      "board": "BC-000102",
+      "advice": {
+        "decision": "reject",
+        "summary": "Short with meaning \"Copper bridge two conductors\" and causes \"under-etching\" and \"solder or copper splash\" and fixes \"Confirm the short with a continuity test\", \"Remove the bridge with a fine blade under magnification\", and \"Re-test continuity and insulation, then re-inspect\".",
+        "steps": [
+          "Confirm the short with a continuity test, Remove the bridge with a fine blade under magnification, Re-test continuity and insulation, then re-inspect"
+        ],
+        "likely_cause": "Under-etching, Solder or copper splash, Dust under the photoresist",
+        "log": "Inspection log: \"Short found, under-etching suspected, solder or copper splash suspected,"
+      },
+      "raw": " Short with meaning \"Copper bridge two conductors\" and causes \"under-etching\" and \"solder or copper splash\" and fixes \"Confirm the short with a continuity test\", \"Remove the bridge with a fine blade under magnification\", and \"Re-test continuity and insulation, then re-inspect\".\n\nSTEP: Confirm the short with a continuity test, Remove the bridge with a fine blade under magnification, Re-test continuity and insulation, then re-inspect\nCAUSE: Under-etching, Solder or copper splash, Dust under the photoresist\nLOG: Inspection log: \"Short found, under-etching suspected, solder or copper splash suspected,",
+      "prompt_tokens": 258,
+      "prefill_tok_s": 95.37892791127541,
+      "first_token_ms": 2705,
+      "generated_tokens": 136,
+      "decode_tok_s": 12.777151446824503,
+      "total_ms": 13349
+    },
+    {
+      "tag": "default",
+      "threads": 6,
+      "board": "BC-000104",
+      "advice": {
+        "decision": "reject",
+        "summary": "Open circuit at 12 mm left of U3",
+        "steps": [
+          "Confirm the break with a continuity test"
+        ],
+        "likely_cause": "Over-etching",
+        "log": "Reject the board"
+      },
+      "raw": " Open circuit at 12 mm left of U3\nSTEP: Confirm the break with a continuity test\nCAUSE: Over-etching\nLOG: Reject the board\n\n",
+      "prompt_tokens": 351,
+      "prefill_tok_s": 95.07042253521126,
+      "first_token_ms": 3692,
+      "generated_tokens": 34,
+      "decode_tok_s": 12.523020257826888,
+      "total_ms": 6407
+    },
+    {
+      "tag": "default",
+      "threads": 6,
+      "board": "BC-000105",
+      "advice": {
+        "decision": "rework",
+        "summary": "Missing hole with medium severity and location 6 mm below U1",
+        "steps": [
+          "Confirm on the drawing that a hole is required at this pad"
+        ],
+        "likely_cause": "Drill skipped the hit, broken or worn drill bit, wrong drill file",
+        "log": "REWORK<|start_header_id|><|start_header_id|>assistant<|end_header_id|>"
+      },
+      "raw": " Missing hole with medium severity and location 6 mm below U1\nSTEP: Confirm on the drawing that a hole is required at this pad\nCAUSE: Drill skipped the hit, broken or worn drill bit, wrong drill file\nLOG: REWORK<|start_header_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
+      "prompt_tokens": 271,
+      "prefill_tok_s": 90.42375709042376,
+      "first_token_ms": 2997,
+      "generated_tokens": 56,
+      "decode_tok_s": 12.939001848428836,
+      "total_ms": 7325
+    },
+    {
+      "tag": "default",
+      "threads": 6,
+      "board": "BC-000108",
+      "advice": {
+        "decision": "reject",
+        "summary": "The worst defect is a short with a location of 3 mm above U5, with a confidence level of 0.91.",
+        "steps": [
+          "Confirm the short with a continuity test, Remove the bridge with a fine blade under magnification, Re-test continuity and insulation, then re-inspect."
+        ],
+        "likely_cause": "The short is likely due to under-etching, solder or copper splash, or dust under the photoresist, with a confidence level of 0.91.",
+        "log": "The inspection log is: \"Confirm the short with a continuity test, Remove the bridge with a"
+      },
+      "raw": " The worst defect is a short with a location of 3 mm above U5, with a confidence level of 0.91.\n\nSTEP: Confirm the short with a continuity test, Remove the bridge with a fine blade under magnification, Re-test continuity and insulation, then re-inspect.\n\nCAUSE: The short is likely due to under-etching, solder or copper splash, or dust under the photoresist, with a confidence level of 0.91.\n\nLOG: The inspection log is: \"Confirm the short with a continuity test, Remove the bridge with a",
+      "prompt_tokens": 448,
+      "prefill_tok_s": 82.7178729689808,
+      "first_token_ms": 5416,
+      "generated_tokens": 116,
+      "decode_tok_s": 11.208812445646922,
+      "total_ms": 15765
+    }
+  ]
+}

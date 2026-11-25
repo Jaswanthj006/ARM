@@ -1,0 +1,49 @@
+W1124 21:16:27.287000 5498 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+W1124 21:16:27.308000 5498 torch/utils/_pytree.py:646] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+YOLO11n summary (fused): 101 layers, 2,583,322 parameters, 0 gradients, 6.4 GFLOPs
+boards: 541 train / 152 val · real board frames 65/17 · negatives: 233 (71 phone frames)
+v4: + 780 real-board training images from 473 photos (yellow bare copper, green mask, red board)
+train 4078 (2598 PCB) · test 891 (507 PCB)
+{
+  "test_images": 891,
+  "pcb": 507,
+  "not_pcb": 384,
+  "accuracy": 0.963,
+  "pcb_recall": 0.9822,
+  "not_pcb_recall": 0.9375,
+  "pcb_missed_as_not_pcb": 9,
+  "non_pcb_accepted_as_pcb": 24,
+  "threshold": 0.5,
+  "negatives_used": 233,
+  "phone_frames": 71,
+  "real_phone_check": {
+    "real_board_frames": 17,
+    "real_board_accepted": 17,
+    "real_background_frames": 15,
+    "real_background_rejected": 15
+  },
+  "real_board_train_frames": 65,
+  "note": "Test PCBs are unseen boards 10-12 (scans, desk composites, close-ups) and the last 20 % of the real-board clip; negatives held out.",
+  "v4_held_out_real_boards": {
+    "pcbdefect_yellow": {
+      "images": 42,
+      "accepted": 39,
+      "blocked_below_0_05": 0,
+      "min_prob": 0.321
+    },
+    "defectdet_green": {
+      "images": 44,
+      "accepted": 44,
+      "blocked_below_0_05": 0,
+      "min_prob": 0.998
+    },
+    "green_board_video": {
+      "images": 37,
+      "accepted": 37,
+      "blocked_below_0_05": 0,
+      "min_prob": 0.769
+    }
+  }
+}
+board map: {'test_images': 352, 'cell_accuracy': 0.9059, 'median_box_iou': 0.9, 'board_fully_inside_box': 0.875, 'note': '10x10 map at 320 px; the app pads the box by one cell before tiling.', 'synthetic_board_inside_padded_box': 0.989, 'real_board_inside_padded_box': '49/51'}
+saved models/pcb_gate_v4.pte 4.49 MB

@@ -1,0 +1,33 @@
+{
+  "val_tiles": 300,
+  "conf": 0.25,
+  "iou_match": 0.5,
+  "results": {
+    "pytorch_fp32": {
+      "precision": 0.856,
+      "recall": 0.978,
+      "found": 273,
+      "missed": 6,
+      "false_alarms": 46
+    },
+    "executorch_fp32": {
+      "precision": 0.856,
+      "recall": 0.978,
+      "found": 273,
+      "missed": 6,
+      "false_alarms": 46,
+      "mac_cpu_ms_per_tile": 19.8,
+      "size_mb": 10.4
+    },
+    "executorch_int8": {
+      "precision": 0.876,
+      "recall": 0.964,
+      "found": 269,
+      "missed": 10,
+      "false_alarms": 38,
+      "mac_cpu_ms_per_tile": 20.7,
+      "size_mb": 4.1
+    }
+  },
+  "note": "Tile-level check on unseen boards 10-12; Mac CPU timings, phone timings come from the app."
+}

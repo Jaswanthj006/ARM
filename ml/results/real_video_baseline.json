@@ -1,0 +1,31 @@
+{
+ "model": "runs/pcb_yolo11n/weights/best.pt (current)",
+ "thresholds": "app per-class",
+ "note": "all boards clean; every box is a false alarm",
+ "results": {
+  "x1": {
+   "frames": {
+    "green": 37,
+    "red": 61
+   },
+   "frames_with_false_alarm": {
+    "green": 0,
+    "red": 0
+   },
+   "false_boxes": {},
+   "total_false_boxes": 0
+  },
+  "x3": {
+   "frames": {
+    "green": 37,
+    "red": 61
+   },
+   "frames_with_false_alarm": {
+    "green": 0,
+    "red": 0
+   },
+   "false_boxes": {},
+   "total_false_boxes": 0
+  }
+ }
+}

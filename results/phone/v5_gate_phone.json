@@ -1,0 +1,70 @@
+[
+ {
+  "image": "real_room",
+  "temp": 42,
+  "result": "NO BOARD",
+  "board_check": 0.268
+ },
+ {
+  "image": "real_00",
+  "board_check": 0.954,
+  "defects": 0,
+  "detect_s": 0.2,
+  "result": "PASS"
+ },
+ {
+  "image": "real_05",
+  "board_check": 0.998,
+  "defects": 0,
+  "detect_s": 0.2,
+  "result": "PASS"
+ },
+ {
+  "image": "real_10",
+  "temp": 42,
+  "board_check": 0.995,
+  "defects": 0,
+  "detect_s": 0.2,
+  "result": "PASS"
+ },
+ {
+  "image": "ddet_img90",
+  "temp": 42,
+  "board_check": 1.0,
+  "defects": 6,
+  "detect_s": 2.3,
+  "result": "REJECT"
+ },
+ {
+  "image": "ddet_img18",
+  "temp": 42,
+  "board_check": 1.0,
+  "defects": 6,
+  "detect_s": 2.3,
+  "result": "REJECT"
+ },
+ {
+  "image": "pcbd_50-1-2",
+  "temp": 42,
+  "board_check": 0.952,
+  "defects": 7,
+  "detect_s": 2.1,
+  "result": "REJECT"
+ },
+ {
+  "image": "10_short_01",
+  "temp": 42,
+  "board_check": 1,
+  "defects": 7,
+  "detect_s": 2.9,
+  "result": "REJECT"
+ },
+ {
+  "image": "12_spur_01",
+  "temp": 42,
+  "board_check": 1,
+  "defects": 5,
+  "detect_s": 2.8,
+  "result": "REWORK"
+ }
+]

@@ -1,0 +1,77 @@
+{
+ "pcbdefect": {
+  "images": 230,
+  "train_images": 188,
+  "test_images": 42,
+  "test_designs": [
+   "50-1",
+   "56-1",
+   "58-2",
+   "61-2",
+   "64-2",
+   "65-2",
+   "68-2",
+   "81-2"
+  ]
+ },
+ "defectdet": {
+  "images": 268,
+  "train_images": 224,
+  "test_images": 44,
+  "test_designs": [
+   "100",
+   "49",
+   "81"
+  ]
+ },
+ "tiles": {
+  "train": {
+   "pcbd_pos": 1784,
+   "pcbd_neg": 100,
+   "ddet_pos": 1716,
+   "ddet_neg": 280
+  },
+  "val_pcbdefect": {
+   "pcbd_pos": 439,
+   "pcbd_neg": 12
+  },
+  "val_defectdet": {
+   "ddet_pos": 339,
+   "ddet_neg": 50
+  }
+ },
+ "boxes": {
+  "train": {
+   "mouse_bite": 1040,
+   "open_circuit": 892,
+   "spur": 1123,
+   "short": 890,
+   "spurious_copper": 779,
+   "missing_pad": 849
+  },
+  "val_pcbdefect": {
+   "spur": 282,
+   "missing_pad": 104,
+   "open_circuit": 126,
+   "spurious_copper": 72,
+   "mouse_bite": 476,
+   "short": 93
+  },
+  "val_defectdet": {
+   "missing_pad": 58,
+   "spur": 88,
+   "short": 76,
+   "open_circuit": 90,
+   "spurious_copper": 85
+  }
+ },
+ "classes": [
+  "missing_hole",
+  "mouse_bite",
+  "open_circuit",
+  "short",
+  "spur",
+  "spurious_copper",
+  "missing_pad"
+ ]
+}

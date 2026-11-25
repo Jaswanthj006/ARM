@@ -1,0 +1,30 @@
+test sets: {'pku_boards': 152, 'deeppcb': 2000, 'dspcbsd': 993, 'green': 37, 'phone': 82}
+running old ...
+  old: pku_boards done (152 images)
+  old: deeppcb done (2000 images)
+  old: dspcbsd done (993 images)
+  old: green done (37 images)
+  old: phone done (82 images)
+running new_e11 ...
+  new_e11: pku_boards done (152 images)
+  new_e11: deeppcb done (2000 images)
+  new_e11: dspcbsd done (993 images)
+  new_e11: green done (37 images)
+  new_e11: phone done (82 images)
+running new_e20 ...
+  new_e20: pku_boards done (152 images)
+  new_e20: deeppcb done (2000 images)
+  new_e20: dspcbsd done (993 images)
+  new_e20: green done (37 images)
+  new_e20: phone done (82 images)
+
+=== summary (P / R; clean = images with any false alarm) ===
+old      app    PKU 0.809/0.938 (iou.3 0.845/0.979) halfB 0.807/0.94 | DeepPCB 0.049/0.004 (iou.3 0.098/0.007) | DsPCBSD 0.0/0.0 (iou.3 0.0/0.0) | green 0/37 | phone 0/82
+old      tuned  PKU 0.885/0.938 (iou.3 0.921/0.977) halfB 0.87/0.929 | DeepPCB 0.046/0.003 (iou.3 0.097/0.006) | DsPCBSD 0.0/0.0 (iou.3 0.0/0.0) | green 0/37 | phone 0/82
+old      tuned thresholds: {'missing_hole': np.float64(0.55), 'mouse_bite': np.float64(0.4), 'open_circuit': np.float64(0.6), 'short': np.float64(0.3), 'spur': np.float64(0.5), 'spurious_copper': np.float64(0.1)}
+new_e11  app    PKU 0.734/0.961 (iou.3 0.756/0.99) halfB 0.73/0.961 | DeepPCB 0.825/0.886 (iou.3 0.835/0.897) | DsPCBSD 0.812/0.396 (iou.3 0.869/0.424) | green 4/37 | phone 0/82
+new_e11  tuned  PKU 0.941/0.917 (iou.3 0.965/0.94) halfB 0.936/0.924 | DeepPCB 0.901/0.791 (iou.3 0.911/0.799) | DsPCBSD 0.839/0.188 (iou.3 0.882/0.198) | green 0/37 | phone 0/82
+new_e11  tuned thresholds: {'missing_hole': np.float64(0.55), 'mouse_bite': np.float64(0.65), 'open_circuit': np.float64(0.35), 'short': np.float64(0.55), 'spur': np.float64(0.5), 'spurious_copper': np.float64(0.65)}
+new_e20  app    PKU 0.662/0.962 (iou.3 0.687/0.999) halfB 0.658/0.955 | DeepPCB 0.85/0.928 (iou.3 0.855/0.934) | DsPCBSD 0.855/0.468 (iou.3 0.9/0.493) | green 13/37 | phone 0/82
+new_e20  tuned  PKU 0.803/0.96 (iou.3 0.832/0.995) halfB 0.796/0.95 | DeepPCB 0.87/0.913 (iou.3 0.876/0.919) | DsPCBSD 0.853/0.354 (iou.3 0.893/0.37) | green 0/37 | phone 0/82
+new_e20  tuned thresholds: {'missing_hole': np.float64(0.6), 'mouse_bite': np.float64(0.4), 'open_circuit': np.float64(0.2), 'short': np.float64(0.4), 'spur': np.float64(0.6), 'spurious_copper': np.float64(0.6)}

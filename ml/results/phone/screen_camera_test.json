@@ -1,0 +1,35 @@
+{
+ "summary": {
+  "boards": 2,
+  "timeouts": 2,
+  "true_defects": 0,
+  "found": 0,
+  "recall": 0.0,
+  "extra_detections": 0,
+  "precision": 0.0,
+  "verdict_accuracy": 0.0,
+  "not_pcb": 0,
+  "quality_warnings": 0,
+  "median_detect_ms": null,
+  "median_total_ms": null
+ },
+ "runs": [
+  {
+   "board": "10_missing_hole_01",
+   "pred": [
+    "missing_hole",
+    "missing_hole",
+    "missing_hole",
+    "missing_hole",
+    "missing_hole"
+   ],
+   "quality": null,
+   "detect_ms": 1638,
+   "error": "timeout"
+  },
+  {
+   "board": "11_spur_05",
+   "error": "timeout"
+  }
+ ]
+}

@@ -1,0 +1,225 @@
+{
+ "boards": [
+  {
+   "board": "10_short_01",
+   "true_defects": 5,
+   "found": 4,
+   "missed": 1,
+   "false_alarms": 3,
+   "verdict": "reject",
+   "items": [
+    "short 0.79",
+    "short 0.78",
+    "short 0.75",
+    "short 0.69",
+    "open_circuit 0.55",
+    "short 0.54",
+    "short 0.52"
+   ],
+   "golden": false,
+   "golden_hidden": 0,
+   "phone_detect_ms": 3120,
+   "phone_total_ms": 8433,
+   "tiles": 16,
+   "ms_per_tile": 166,
+   "advice_source": "llama",
+   "llama_tok_s": 10.9,
+   "temp_c": 39,
+   "thermal": 2,
+   "quality": null,
+   "advice": "The worst defect is short (critical) at bottom-centre of the board."
+  },
+  {
+   "board": "11_open_circuit_01",
+   "true_defects": 5,
+   "found": 5,
+   "missed": 0,
+   "false_alarms": 0,
+   "verdict": "reject",
+   "items": [
+    "open_circuit 0.76",
+    "open_circuit 0.68",
+    "open_circuit 0.68",
+    "open_circuit 0.65",
+    "open_circuit 0.60"
+   ],
+   "golden": false,
+   "golden_hidden": 0,
+   "phone_detect_ms": 2161,
+   "phone_total_ms": 8979,
+   "tiles": 16,
+   "ms_per_tile": 126,
+   "advice_source": "llama",
+   "llama_tok_s": 11.1,
+   "temp_c": 39,
+   "thermal": 2,
+   "quality": null,
+   "advice": "The worst defect is an open circuit on the board, where the circuit is not connected. The most likely cause is over-etching, scratch during handling, and void in copper plating."
+  },
+  {
+   "board": "12_spur_01",
+   "true_defects": 5,
+   "found": 5,
+   "missed": 0,
+   "false_alarms": 0,
+   "verdict": "rework",
+   "items": [
+    "spur 0.76",
+    "spur 0.70",
+    "spur 0.69",
+    "spur 0.66",
+    "spur 0.62"
+   ],
+   "golden": false,
+   "golden_hidden": 0,
+   "phone_detect_ms": 2386,
+   "phone_total_ms": 7550,
+   "tiles": 16,
+   "ms_per_tile": 134,
+   "advice_source": "llama",
+   "llama_tok_s": 9.7,
+   "temp_c": 39,
+   "thermal": 2,
+   "quality": null,
+   "advice": "The worst defect is a spur (minor) at the top-right of the board."
+  },
+  {
+   "board": "pcbd_50-1-1",
+   "not_pcb": 0.012367431074380875
+  },
+  {
+   "board": "pcbd_50-1-2",
+   "not_pcb": 0.005087339784950018
+  },
+  {
+   "board": "ddet_img102",
+   "true_defects": 5,
+   "found": 5,
+   "missed": 0,
+   "false_alarms": 1,
+   "verdict": "reject",
+   "items": [
+    "missing_pad 0.87",
+    "open_circuit 0.79",
+    "short 0.67",
+    "short 0.60",
+    "spur 0.76",
+    "spurious_copper 0.68"
+   ],
+   "golden": false,
+   "golden_hidden": 0,
+   "phone_detect_ms": 2162,
+   "phone_total_ms": 10585,
+   "tiles": 16,
+   "ms_per_tile": 127,
+   "advice_source": "llama",
+   "llama_tok_s": 8.5,
+   "temp_c": 39,
+   "thermal": 2,
+   "quality": null,
+   "advice": "The worst defect is missing pad, which cannot be soldered, and open circuit is present on 4 of the last 5 boards. The cause is the process step, not this board alone."
+  },
+  {
+   "board": "ddet_img18",
+   "true_defects": 5,
+   "found": 5,
+   "missed": 0,
+   "false_alarms": 1,
+   "verdict": "reject",
+   "items": [
+    "missing_pad 0.88",
+    "short 0.81",
+    "open_circuit 0.74",
+    "open_circuit 0.57",
+    "spur 0.81",
+    "spurious_copper 0.73"
+   ],
+   "golden": false,
+   "golden_hidden": 0,
+   "phone_detect_ms": 2222,
+   "phone_total_ms": 9946,
+   "tiles": 16,
+   "ms_per_tile": 130,
+   "advice_source": "llama",
+   "llama_tok_s": 10.4,
+   "temp_c": 39,
+   "thermal": 2,
+   "quality": null,
+   "advice": "The worst defect is missing_pad, where the component cannot be soldered at that point. One finding is missing_pad, where the component cannot be soldered at that point. The most likely process cause is over-etching."
+  },
+  {
+   "board": "real_00",
+   "true_defects": 0,
+   "found": 0,
+   "missed": 0,
+   "false_alarms": 0,
+   "verdict": "pass",
+   "items": [],
+   "golden": false,
+   "golden_hidden": 0,
+   "phone_detect_ms": 192,
+   "phone_total_ms": 196,
+   "tiles": 1,
+   "ms_per_tile": 131,
+   "advice_source": "rules (clean)",
+   "llama_tok_s": null,
+   "temp_c": null,
+   "thermal": null,
+   "quality": "blurry, hold the phone steady and re-inspect",
+   "advice": "No defects found. The board can move to the next station."
+  },
+  {
+   "board": "real_01",
+   "true_defects": 0,
+   "found": 0,
+   "missed": 0,
+   "false_alarms": 0,
+   "verdict": "pass",
+   "items": [],
+   "golden": false,
+   "golden_hidden": 0,
+   "phone_detect_ms": 199,
+   "phone_total_ms": 205,
+   "tiles": 1,
+   "ms_per_tile": 136,
+   "advice_source": "rules (clean)",
+   "llama_tok_s": null,
+   "temp_c": null,
+   "thermal": null,
+   "quality": null,
+   "advice": "No defects found. The board can move to the next station."
+  }
+ ],
+ "golden": [
+  {
+   "test": "ddet_img102",
+   "reference": "ddet_img126",
+   "reference_saved": true,
+   "without": {
+    "found": 5,
+    "false_alarms": 1
+   },
+   "with_golden": {
+    "found": 5,
+    "false_alarms": 1,
+    "hidden": 0,
+    "detect_ms": 3482
+   }
+  },
+  {
+   "test": "10_short_01",
+   "reference": "10_short_02",
+   "reference_saved": true,
+   "without": {
+    "found": 4,
+    "false_alarms": 3
+   },
+   "with_golden": {
+    "found": 2,
+    "false_alarms": 1,
+    "hidden": 4,
+    "detect_ms": 4903
+   }
+  }
+ ]
+}

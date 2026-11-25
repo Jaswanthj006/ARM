@@ -1,0 +1,59 @@
+{
+  "test_images": 1243,
+  "pcb": 507,
+  "not_pcb": 736,
+  "accuracy": 0.9791,
+  "pcb_recall": 0.9882,
+  "not_pcb_recall": 0.9728,
+  "pcb_missed_as_not_pcb": 6,
+  "non_pcb_accepted_as_pcb": 20,
+  "threshold": 0.5,
+  "negatives_used": 451,
+  "phone_frames": 71,
+  "real_phone_check": {
+    "real_board_frames": 17,
+    "real_board_accepted": 17,
+    "real_background_frames": 60,
+    "real_background_rejected": 58
+  },
+  "real_board_train_frames": 65,
+  "note": "Test PCBs are unseen boards 10-12 (scans, desk composites, close-ups) and the last 20 % of the real-board clip; negatives held out.",
+  "v5_room_test": {
+    "room_video_last_25pct": 44,
+    "room_photo": 1,
+    "rejected": 45,
+    "below_pass_min_0_7": 45,
+    "max_prob": 0.179,
+    "room_photo_prob": 0.179
+  },
+  "v4_held_out_real_boards": {
+    "pcbdefect_yellow": {
+      "images": 42,
+      "accepted": 38,
+      "blocked_below_0_05": 0,
+      "min_prob": 0.091
+    },
+    "defectdet_green": {
+      "images": 44,
+      "accepted": 44,
+      "blocked_below_0_05": 0,
+      "min_prob": 1.0
+    },
+    "green_board_video": {
+      "images": 37,
+      "accepted": 37,
+      "blocked_below_0_05": 0,
+      "min_prob": 0.912
+    }
+  },
+  "board_map": {
+    "test_images": 380,
+    "cell_accuracy": 0.9015,
+    "median_box_iou": 0.9,
+    "board_fully_inside_box": 0.836,
+    "note": "10x10 map at 320 px; the app pads the box by one cell before tiling.",
+    "synthetic_board_inside_padded_box": 0.958,
+    "real_board_inside_padded_box": "51/51"
+  },
+  "pte_mb": 4.49
+}

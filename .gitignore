@@ -1,0 +1,53 @@
+# macOS / editors
+.DS_Store
+._*
+.claude/
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+ml/.venv*/
+
+# Local backups made while developing
+backup*/
+web/js/*.backup.js
+
+# Android build output and machine-specific files
+.gradle/
+.kotlin/
+**/build/
+android/local.properties
+android/*.apk
+android/*.bak
+
+# Datasets (downloaded by ml/data_prep, see README; each has its own licence)
+ml/data/
+
+# Large or downloadable model files
+ml/yolo11n.pt
+ml/llm/Llama-3.2-1B-Instruct/
+ml/llm/pte_8da4w/
+ml/llm/*.pte
+ml/llm/download.log
+ml/models/*
+!ml/models/pcb_yolo11n_v3_fp16.pte
+!ml/models/pcb_gate_v5.pte
+
+# Training runs: keep only the final v3 run (curves, metrics, best weights)
+ml/runs/*
+!ml/runs/pcb_yolo11n_v3/
+ml/runs/pcb_yolo11n_v3/weights/last.pt
+ml/runs/pcb_yolo11n_v3/train_batch*.jpg
+ml/runs_train*.log
+ml/results/phase3_cache/
+
+# Raw Streamline captures (hundreds of MB); the summary JSON is kept
+profiling/captures/*
+!profiling/captures/one_board_summary.json
+
+# Runtime files and dataset sample images
+web/screen/
+server/*.log
+ml/runs/pcb_yolo11n_v3/*.jpg

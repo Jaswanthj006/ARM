@@ -1,0 +1,24 @@
+{
+ "weights": "ml/runs/pcb_yolo11n_v2_aws/weights/best.pt",
+ "conf": 0.35,
+ "stats": {
+  "pku_tiles": 14730,
+  "pku_hardneg_tiles": 374,
+  "pku_hardneg_clean_tiles": 296,
+  "other_tiles": 8126,
+  "other_hardneg_tiles": 812
+ },
+ "false_alarms_by_class": {
+  "mouse_bite": 18,
+  "short": 141,
+  "spur": 19,
+  "open_circuit": 9,
+  "spurious_copper": 68,
+  "missing_hole": 123,
+  "short_other": 136,
+  "open_circuit_other": 150,
+  "spurious_copper_other": 389,
+  "spur_other": 182,
+  "mouse_bite_other": 162
+ }
+}

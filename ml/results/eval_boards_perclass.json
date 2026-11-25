@@ -1,0 +1,67 @@
+{
+  "summary": {
+    "boards": 152,
+    "conf": 0.25,
+    "class_conf": {
+      "missing_hole": 0.4,
+      "mouse_bite": 0.4,
+      "open_circuit": 0.4,
+      "short": 0.25,
+      "spur": 0.4,
+      "spurious_copper": 0.4
+    },
+    "defects": 768,
+    "precision": 0.806,
+    "recall": 0.938,
+    "missed": 48,
+    "false_alarms": 173,
+    "boards_flagged": "152/152",
+    "mac_ms_per_board": 250.3,
+    "device": "mps",
+    "note": "Every validation board has defects, so board-level false rejects cannot be measured on this set."
+  },
+  "per_class": {
+    "missing_hole": {
+      "precision": 0.907,
+      "recall": 0.921,
+      "found": 117,
+      "missed": 10,
+      "false_alarms": 12
+    },
+    "mouse_bite": {
+      "precision": 0.931,
+      "recall": 0.96,
+      "found": 121,
+      "missed": 5,
+      "false_alarms": 9
+    },
+    "open_circuit": {
+      "precision": 0.894,
+      "recall": 0.969,
+      "found": 127,
+      "missed": 4,
+      "false_alarms": 15
+    },
+    "short": {
+      "precision": 0.549,
+      "recall": 0.897,
+      "found": 113,
+      "missed": 13,
+      "false_alarms": 93
+    },
+    "spur": {
+      "precision": 0.792,
+      "recall": 0.968,
+      "found": 122,
+      "missed": 4,
+      "false_alarms": 32
+    },
+    "spurious_copper": {
+      "precision": 0.909,
+      "recall": 0.909,
+      "found": 120,
+      "missed": 12,
+      "false_alarms": 12
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+ "model": "/Users/jaswanthss/Downloads/ARM!!/ml/runs/pcb_yolo11n_v3/weights/best.pt",
+ "pte": "/Users/jaswanthss/Downloads/ARM!!/ml/models/pcb_yolo11n_v3_fp16.pte",
+ "size_mb": 10.49,
+ "output_shape": [
+  1,
+  11,
+  8400
+ ],
+ "thresholds": {
+  "missing_hole": 0.5,
+  "mouse_bite": 0.35,
+  "open_circuit": 0.55,
+  "short": 0.5,
+  "spur": 0.25,
+  "spurious_copper": 0.6,
+  "missing_pad": 0.45
+ },
+ "sets": {
+  "val_pku": {
+   "pytorch": {
+    "found": 97,
+    "false": 14,
+    "missed": 3,
+    "P": 0.874,
+    "R": 0.97
+   },
+   "pte": {
+    "found": 97,
+    "false": 13,
+    "missed": 3,
+    "P": 0.882,
+    "R": 0.97
+   }
+  },
+  "val_pcbdefect": {
+   "pytorch": {
+    "found": 140,
+    "false": 22,
+    "missed": 76,
+    "P": 0.864,
+    "R": 0.648
+   },
+   "pte": {
+    "found": 138,
+    "false": 23,
+    "missed": 78,
+    "P": 0.857,
+    "R": 0.639
+   }
+  },
+  "val_defectdet": {
+   "pytorch": {
+    "found": 79,
+    "false": 7,
+    "missed": 25,
+    "P": 0.919,
+    "R": 0.76
+   },
+   "pte": {
+    "found": 79,
+    "false": 7,
+    "missed": 25,
+    "P": 0.919,
+    "R": 0.76
+   }
+  }
+ },
+ "all": {
+  "pytorch": {
+   "P": 0.88,
+   "R": 0.752
+  },
+  "pte": {
+   "P": 0.88,
+   "R": 0.748
+  }
+ },
+ "max_class_score_diff_fp16_vs_fp32": 0.0591,
+ "mac_cpu_ms_per_tile_median": 21.6
+}

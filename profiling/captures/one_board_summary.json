@@ -1,0 +1,290 @@
+[
+ {
+  "stage": "Inspect ddet_img18",
+  "ms": 15143,
+  "big_core_share": 0.662,
+  "ipc_a715": 2.34,
+  "ipc_a510": 0.74,
+  "l2_refill_per_1k_instr_a715": 4.84,
+  "backend_stall_a715": 0.312,
+  "frontend_stall_a715": 0.022,
+  "avg_busy_cores": 0.9,
+  "side_threads_share": 0.018,
+  "top_threads": [
+   {
+    "thread": "pool-4-thread-1#25902",
+    "a715_Mcyc": 11729.5,
+    "a510_Mcyc": 3730.0
+   },
+   {
+    "thread": "com.boardcheck.app#25904",
+    "a715_Mcyc": 8988.1,
+    "a510_Mcyc": 4690.1
+   },
+   {
+    "thread": "binder:25865_5#26075",
+    "a715_Mcyc": 148.7,
+    "a510_Mcyc": 432.4
+   },
+   {
+    "thread": "binder:25865_4#25924",
+    "a715_Mcyc": 113.1,
+    "a510_Mcyc": 360.9
+   },
+   {
+    "thread": "com.boardcheck.app#25865",
+    "a715_Mcyc": 116.6,
+    "a510_Mcyc": 342.2
+   },
+   {
+    "thread": "binder:25865_3#25877",
+    "a715_Mcyc": 97.7,
+    "a510_Mcyc": 269.4
+   }
+  ]
+ },
+ {
+  "stage": "Board check (gate)",
+  "ms": 133,
+  "big_core_share": 0.721,
+  "ipc_a715": 2.94,
+  "ipc_a510": 0.65,
+  "l2_refill_per_1k_instr_a715": 1.76,
+  "backend_stall_a715": 0.21,
+  "frontend_stall_a715": 0.032,
+  "avg_busy_cores": 0.6,
+  "side_threads_share": 0.019,
+  "top_threads": [
+   {
+    "thread": "pool-4-thread-1#25902",
+    "a715_Mcyc": 98.2,
+    "a510_Mcyc": 26.1
+   },
+   {
+    "thread": "com.boardcheck.app#25904",
+    "a715_Mcyc": 34.1,
+    "a510_Mcyc": 7.4
+   },
+   {
+    "thread": "binder:25865_4#25924",
+    "a715_Mcyc": 3.1,
+    "a510_Mcyc": 5.2
+   },
+   {
+    "thread": "Jit thread pool#25870",
+    "a715_Mcyc": 1.3,
+    "a510_Mcyc": 5.7
+   },
+   {
+    "thread": "CameraDeviceExe#25941",
+    "a715_Mcyc": 0.3,
+    "a510_Mcyc": 2.0
+   },
+   {
+    "thread": "CameraX-core_ca#25921",
+    "a715_Mcyc": 0.0,
+    "a510_Mcyc": 1.8
+   }
+  ]
+ },
+ {
+  "stage": "Photo quality",
+  "ms": 91,
+  "big_core_share": 0.793,
+  "ipc_a715": 2.75,
+  "ipc_a510": 0.74,
+  "l2_refill_per_1k_instr_a715": 0.57,
+  "backend_stall_a715": 0.373,
+  "frontend_stall_a715": 0.03,
+  "avg_busy_cores": 0.54,
+  "side_threads_share": 0.008,
+  "top_threads": [
+   {
+    "thread": "pool-4-thread-1#25902",
+    "a715_Mcyc": 87.5,
+    "a510_Mcyc": 16.3
+   },
+   {
+    "thread": "Jit thread pool#25870",
+    "a715_Mcyc": 3.4,
+    "a510_Mcyc": 1.7
+   },
+   {
+    "thread": "binder:25865_3#25877",
+    "a715_Mcyc": 1.4,
+    "a510_Mcyc": 2.3
+   },
+   {
+    "thread": "binder:25865_5#26075",
+    "a715_Mcyc": 1.1,
+    "a510_Mcyc": 1.8
+   },
+   {
+    "thread": "CameraDeviceExe#25941",
+    "a715_Mcyc": 0.0,
+    "a510_Mcyc": 1.4
+   },
+   {
+    "thread": "CameraX-core_ca#25921",
+    "a715_Mcyc": 0.0,
+    "a510_Mcyc": 0.6
+   }
+  ]
+ },
+ {
+  "stage": "YOLO11n defect detection",
+  "ms": 3246,
+  "big_core_share": 0.731,
+  "ipc_a715": 2.42,
+  "ipc_a510": 0.89,
+  "l2_refill_per_1k_instr_a715": 2.88,
+  "backend_stall_a715": 0.224,
+  "frontend_stall_a715": 0.013,
+  "avg_busy_cores": 0.87,
+  "side_threads_share": 0.01,
+  "top_threads": [
+   {
+    "thread": "pool-4-thread-1#25902",
+    "a715_Mcyc": 3032.2,
+    "a510_Mcyc": 557.2
+   },
+   {
+    "thread": "com.boardcheck.app#25904",
+    "a715_Mcyc": 1753.4,
+    "a510_Mcyc": 834.7
+   },
+   {
+    "thread": "binder:25865_5#26075",
+    "a715_Mcyc": 35.4,
+    "a510_Mcyc": 123.0
+   },
+   {
+    "thread": "CameraDeviceExe#25941",
+    "a715_Mcyc": 11.5,
+    "a510_Mcyc": 52.4
+   },
+   {
+    "thread": "binder:25865_3#25877",
+    "a715_Mcyc": 13.9,
+    "a510_Mcyc": 41.4
+   },
+   {
+    "thread": "HeapTaskDaemon#25871",
+    "a715_Mcyc": 36.7,
+    "a510_Mcyc": 18.3
+   }
+  ]
+ },
+ {
+  "stage": "NMS",
+  "ms": 2,
+  "big_core_share": 0.99,
+  "ipc_a715": 2.05,
+  "ipc_a510": 0.15,
+  "l2_refill_per_1k_instr_a715": 4.14,
+  "backend_stall_a715": 0.191,
+  "frontend_stall_a715": 0.167,
+  "avg_busy_cores": 1.22,
+  "side_threads_share": 0.0,
+  "top_threads": [
+   {
+    "thread": "pool-4-thread-1#25902",
+    "a715_Mcyc": 3.8,
+    "a510_Mcyc": 0.0
+   },
+   {
+    "thread": "Jit thread pool#25870",
+    "a715_Mcyc": 3.0,
+    "a510_Mcyc": 0.1
+   }
+  ]
+ },
+ {
+  "stage": "Llama prefill (board findings)",
+  "ms": 4788,
+  "big_core_share": 0.732,
+  "ipc_a715": 2.35,
+  "ipc_a510": 0.74,
+  "l2_refill_per_1k_instr_a715": 2.29,
+  "backend_stall_a715": 0.254,
+  "frontend_stall_a715": 0.011,
+  "avg_busy_cores": 0.92,
+  "side_threads_share": 0.01,
+  "top_threads": [
+   {
+    "thread": "pool-4-thread-1#25902",
+    "a715_Mcyc": 3820.8,
+    "a510_Mcyc": 1106.4
+   },
+   {
+    "thread": "com.boardcheck.app#25904",
+    "a715_Mcyc": 3744.6,
+    "a510_Mcyc": 1112.0
+   },
+   {
+    "thread": "binder:25865_5#26075",
+    "a715_Mcyc": 51.3,
+    "a510_Mcyc": 172.9
+   },
+   {
+    "thread": "binder:25865_4#25924",
+    "a715_Mcyc": 36.6,
+    "a510_Mcyc": 143.4
+   },
+   {
+    "thread": "CameraDeviceExe#25941",
+    "a715_Mcyc": 14.2,
+    "a510_Mcyc": 82.4
+   },
+   {
+    "thread": "Jit thread pool#25870",
+    "a715_Mcyc": 51.5,
+    "a510_Mcyc": 30.5
+   }
+  ]
+ },
+ {
+  "stage": "Llama decode",
+  "ms": 6752,
+  "big_core_share": 0.58,
+  "ipc_a715": 2.27,
+  "ipc_a510": 0.7,
+  "l2_refill_per_1k_instr_a715": 8.56,
+  "backend_stall_a715": 0.42,
+  "frontend_stall_a715": 0.034,
+  "avg_busy_cores": 0.9,
+  "side_threads_share": 0.026,
+  "top_threads": [
+   {
+    "thread": "pool-4-thread-1#25902",
+    "a715_Mcyc": 4621.9,
+    "a510_Mcyc": 2002.7
+   },
+   {
+    "thread": "com.boardcheck.app#25904",
+    "a715_Mcyc": 3456.0,
+    "a510_Mcyc": 2736.0
+   },
+   {
+    "thread": "com.boardcheck.app#25865",
+    "a715_Mcyc": 71.9,
+    "a510_Mcyc": 261.5
+   },
+   {
+    "thread": "binder:25865_3#25877",
+    "a715_Mcyc": 81.8,
+    "a510_Mcyc": 225.7
+   },
+   {
+    "thread": "RenderThread#25893",
+    "a715_Mcyc": 53.5,
+    "a510_Mcyc": 193.0
+   },
+   {
+    "thread": "binder:25865_4#25924",
+    "a715_Mcyc": 54.6,
+    "a510_Mcyc": 168.5
+   }
+  ]
+ }
+]

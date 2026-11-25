@@ -1,0 +1,327 @@
+{
+ "chosen_model": "runs/pcb_yolo11n_v3/weights/best.pt",
+ "final_thresholds": {
+  "missing_hole": 0.5,
+  "mouse_bite": 0.35,
+  "open_circuit": 0.55,
+  "short": 0.5,
+  "spur": 0.25,
+  "spurious_copper": 0.6,
+  "missing_pad": 0.45
+ },
+ "how": "tuned on half A of PKU boards + both real-board test sets (by image), short set to 0.5 (best balance; 0.3 doubles PKU junction false alarms); reported on half B only. DeepPCB/DsPCBSD+ full test sets.",
+ "models": {
+  "old": {
+   "pku_boards": {
+    "P": 0.807,
+    "R": 0.94,
+    "false": 86,
+    "missed": 23,
+    "per_class": {
+     "missing_hole": [
+      0.887,
+      0.917
+     ],
+     "mouse_bite": [
+      0.955,
+      0.969
+     ],
+     "open_circuit": [
+      0.861,
+      0.939
+     ],
+     "short": [
+      0.54,
+      0.885
+     ],
+     "spur": [
+      0.81,
+      0.985
+     ],
+     "spurious_copper": [
+      0.924,
+      0.938
+     ]
+    }
+   },
+   "real_pcbdefect": {
+    "P": null,
+    "R": 0.0,
+    "false": 0,
+    "missed": 369,
+    "per_class": {
+     "mouse_bite": [
+      null,
+      0.0
+     ],
+     "open_circuit": [
+      null,
+      0.0
+     ],
+     "short": [
+      null,
+      0.0
+     ],
+     "spur": [
+      null,
+      0.0
+     ],
+     "spurious_copper": [
+      null,
+      0.0
+     ],
+     "missing_pad": [
+      null,
+      0.0
+     ]
+    }
+   },
+   "real_defectdet": {
+    "P": 0.0,
+    "R": 0.0,
+    "false": 9,
+    "missed": 104,
+    "per_class": {
+     "open_circuit": [
+      null,
+      0.0
+     ],
+     "short": [
+      0.0,
+      0.0
+     ],
+     "spur": [
+      0.0,
+      0.0
+     ],
+     "spurious_copper": [
+      null,
+      0.0
+     ],
+     "missing_pad": [
+      null,
+      0.0
+     ]
+    }
+   },
+   "deeppcb": {
+    "P": 0.049,
+    "R": 0.004
+   },
+   "dspcbsd": {
+    "P": 0.0,
+    "R": 0.0
+   },
+   "green_false_frames": 0,
+   "phone_false_frames": 0
+  },
+  "v2_e11": {
+   "pku_boards": {
+    "P": 0.861,
+    "R": 0.94,
+    "false": 58,
+    "missed": 23,
+    "per_class": {
+     "missing_hole": [
+      0.915,
+      0.9
+     ],
+     "mouse_bite": [
+      0.985,
+      0.985
+     ],
+     "open_circuit": [
+      0.971,
+      1.0
+     ],
+     "short": [
+      0.582,
+      0.869
+     ],
+     "spur": [
+      0.897,
+      0.938
+     ],
+     "spurious_copper": [
+      0.924,
+      0.938
+     ]
+    }
+   },
+   "real_pcbdefect": {
+    "P": 0.0,
+    "R": 0.0,
+    "false": 2,
+    "missed": 369,
+    "per_class": {
+     "mouse_bite": [
+      0.0,
+      0.0
+     ],
+     "open_circuit": [
+      0.0,
+      0.0
+     ],
+     "short": [
+      null,
+      0.0
+     ],
+     "spur": [
+      null,
+      0.0
+     ],
+     "spurious_copper": [
+      null,
+      0.0
+     ],
+     "missing_pad": [
+      null,
+      0.0
+     ]
+    }
+   },
+   "real_defectdet": {
+    "P": 0.444,
+    "R": 0.154,
+    "false": 20,
+    "missed": 88,
+    "per_class": {
+     "open_circuit": [
+      0.0,
+      0.0
+     ],
+     "short": [
+      1.0,
+      0.227
+     ],
+     "spur": [
+      0.786,
+      0.5
+     ],
+     "spurious_copper": [
+      null,
+      0.0
+     ],
+     "missing_pad": [
+      null,
+      0.0
+     ]
+    }
+   },
+   "deeppcb": {
+    "P": 0.893,
+    "R": 0.807
+   },
+   "dspcbsd": {
+    "P": 0.846,
+    "R": 0.208
+   },
+   "green_false_frames": 0,
+   "phone_false_frames": 0
+  },
+  "v3": {
+   "pku_boards": {
+    "P": 0.722,
+    "R": 0.95,
+    "false": 140,
+    "missed": 19,
+    "per_class": {
+     "missing_hole": [
+      0.867,
+      0.867
+     ],
+     "mouse_bite": [
+      0.942,
+      1.0
+     ],
+     "open_circuit": [
+      0.97,
+      0.985
+     ],
+     "short": [
+      0.364,
+      0.902
+     ],
+     "spur": [
+      0.813,
+      0.938
+     ],
+     "spurious_copper": [
+      0.802,
+      1.0
+     ]
+    }
+   },
+   "real_pcbdefect": {
+    "P": 0.873,
+    "R": 0.539,
+    "false": 29,
+    "missed": 170,
+    "per_class": {
+     "mouse_bite": [
+      0.837,
+      0.434
+     ],
+     "open_circuit": [
+      1.0,
+      0.848
+     ],
+     "short": [
+      0.862,
+      0.926
+     ],
+     "spur": [
+      0.882,
+      0.506
+     ],
+     "spurious_copper": [
+      0.7,
+      0.269
+     ],
+     "missing_pad": [
+      0.917,
+      0.786
+     ]
+    }
+   },
+   "real_defectdet": {
+    "P": 0.86,
+    "R": 0.769,
+    "false": 13,
+    "missed": 24,
+    "per_class": {
+     "open_circuit": [
+      0.947,
+      0.818
+     ],
+     "short": [
+      0.947,
+      0.818
+     ],
+     "spur": [
+      0.826,
+      0.864
+     ],
+     "spurious_copper": [
+      0.941,
+      0.727
+     ],
+     "missing_pad": [
+      0.6,
+      0.562
+     ]
+    }
+   },
+   "deeppcb": {
+    "P": 0.892,
+    "R": 0.912
+   },
+   "dspcbsd": {
+    "P": 0.834,
+    "R": 0.544
+   },
+   "green_false_frames": 0,
+   "phone_false_frames": 0
+  }
+ }
+}

@@ -1,0 +1,6 @@
+round=1 pin=false yolo_fwd_ms_per_tile=135 prefill_ms=3180 decode_tok=48 decode_ms=5120 total_s=10.8 thermal=2 battery=400
+round=1 pin=true yolo_fwd_ms_per_tile=196 prefill_ms=3938 decode_tok=48 decode_ms=7379 total_s=14.8 thermal=1 battery=400
+round=2 pin=false yolo_fwd_ms_per_tile=288 prefill_ms=5932 decode_tok=29 decode_ms=3821 total_s=15.0 thermal=2 battery=400
+round=2 pin=true yolo_fwd_ms_per_tile=179 prefill_ms=4952 decode_tok=17 decode_ms=1937 total_s=10.1 thermal=3 battery=410
+round=3 pin=false yolo_fwd_ms_per_tile=179 prefill_ms=4690 decode_tok=40 decode_ms=4747 total_s=12.7 thermal=3 battery=410
+round=3 pin=true yolo_fwd_ms_per_tile=174 prefill_ms=4390 decode_tok=40 decode_ms=4155 total_s=11.7 thermal=3 battery=410

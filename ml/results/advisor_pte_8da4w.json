@@ -1,0 +1,251 @@
+{
+  "summary": {
+    "model": "model.pte",
+    "size_gb": 0.96,
+    "load_s": 0.0,
+    "samples": 8,
+    "valid_json": "8/8",
+    "no_issues": "8/8",
+    "decision": "set by rules, Llama explains it",
+    "median_seconds": 4.75,
+    "median_tokens_per_s": 14.3,
+    "machine": "Mac (Apple M4), CPU, ExecuTorch XNNPACK"
+  },
+  "runs": [
+    {
+      "board": "BC-000101",
+      "findings": [],
+      "rule": "pass",
+      "skipped_llm": true,
+      "seconds": 0,
+      "tokens_per_s": null,
+      "valid_json": true,
+      "issues": [],
+      "advice": {
+        "summary": "No defects found. The board can move to the next station.",
+        "steps": [
+          "Move the board to the next station"
+        ],
+        "likely_cause": "",
+        "log": "Visual inspection passed, no defects found.",
+        "decision": "pass"
+      },
+      "raw": ""
+    },
+    {
+      "board": "BC-000102",
+      "findings": [
+        {
+          "type": "short",
+          "conf": 0.93,
+          "location": "4 mm right of U2"
+        }
+      ],
+      "rule": "reject",
+      "prompt_tokens": 296,
+      "output_tokens": 61,
+      "seconds": 4.27,
+      "tokens_per_s": 14.3,
+      "valid_json": true,
+      "issues": [],
+      "advice": {
+        "summary": "Short on board 4 mm right of U2",
+        "steps": [
+          "Confirm the short with a continuity test"
+        ],
+        "likely_cause": "Under-etching",
+        "log": "The short was confirmed with a continuity test, and the repair guide was followed to remove the bridge with a fine blade under magnification.",
+        "decision": "reject"
+      },
+      "raw": "SUMMARY: Short on board 4 mm right of U2\nSTEP: Confirm the short with a continuity test\nCAUSE: Under-etching\nLOG: The short was confirmed with a continuity test, and the repair guide was followed to remove the bridge with a fine blade under magnification."
+    },
+    {
+      "board": "BC-000103",
+      "findings": [
+        {
+          "type": "spur",
+          "conf": 0.71,
+          "location": "9 mm above U1"
+        }
+      ],
+      "rule": "rework",
+      "prompt_tokens": 290,
+      "output_tokens": 53,
+      "seconds": 2.3,
+      "tokens_per_s": 23.1,
+      "valid_json": true,
+      "issues": [],
+      "advice": {
+        "summary": "Spur with low severity and location 9 mm above U1",
+        "steps": [
+          "Measure the gap from the spur to the nearest conductor"
+        ],
+        "likely_cause": "Under-etching at that spot",
+        "log": "Measure the gap from the spur to the nearest conductor",
+        "decision": "rework"
+      },
+      "raw": "SUMMARY: Spur with low severity and location 9 mm above U1\nSTEP: Measure the gap from the spur to the nearest conductor\nCAUSE: Under-etching at that spot\nLOG: Measure the gap from the spur to the nearest conductor"
+    },
+    {
+      "board": "BC-000104",
+      "findings": [
+        {
+          "type": "open_circuit",
+          "conf": 0.88,
+          "location": "12 mm left of U3"
+        },
+        {
+          "type": "spur",
+          "conf": 0.66,
+          "location": "near U3"
+        }
+      ],
+      "rule": "reject",
+      "prompt_tokens": 407,
+      "output_tokens": 161,
+      "seconds": 8.94,
+      "tokens_per_s": 18.0,
+      "valid_json": true,
+      "issues": [],
+      "advice": {
+        "summary": "Open circuit at 12 mm left of U3",
+        "steps": [
+          "Confirm the break with a continuity test",
+          "Reject the board"
+        ],
+        "likely_cause": "Over-etching",
+        "log": "Void in copper plating",
+        "decision": "reject"
+      },
+      "raw": "SUMMARY: Open circuit at 12 mm left of U3\nSTEP: Confirm the break with a continuity test\nCAUSE: Over-etching\nLOG: Void in copper plating\nSTEP: Reject the board\nCAUSE: Scratch during handling\nLOG: Scratch during handling\nSTEP: Reject the board\nCAUSE: Resist residue\nLOG: Under-etching at that spot\nSTEP: Reject the board\nCAUSE: Under-etching at that spot\nLOG: Under-etching at that spot\nSTEP: Reject the board\nCAUSE: Void in copper plating\nLOG: Void in copper plating\nSTEP: Reject the board\nCAUSE: Scratch during handling\nLOG: Scratch during handling\nSTEP: Reject the board\nCAUSE: Resist residue"
+    },
+    {
+      "board": "BC-000105",
+      "findings": [
+        {
+          "type": "missing_hole",
+          "conf": 0.95,
+          "location": "6 mm below U1"
+        }
+      ],
+      "rule": "rework",
+      "prompt_tokens": 309,
+      "output_tokens": 161,
+      "seconds": 8.28,
+      "tokens_per_s": 19.5,
+      "valid_json": true,
+      "issues": [],
+      "advice": {
+        "summary": "Missing hole in the pad at 6 mm below U1",
+        "steps": [
+          "Confirm on the drawing that a hole is required at this pad",
+          "Re-drill with the correct bit if the pad and annular ring are intact",
+          "Replace the drill bit",
+          "Check the drill bit for any signs of damage"
+        ],
+        "likely_cause": "Drill skipped the hit",
+        "log": "Drill bit wear log indicates the drill bit was worn out",
+        "decision": "rework"
+      },
+      "raw": "SUMMARY: Missing hole in the pad at 6 mm below U1\nSTEP: Confirm on the drawing that a hole is required at this pad\nCAUSE: Drill skipped the hit\nLOG: Drill bit wear log indicates the drill bit was worn out\nSTEP: Re-drill with the correct bit if the pad and annular ring are intact\nCAUSE: Drill bit was worn out\nLOG: Drill bit wear log indicates the drill bit was worn out\nSTEP: Replace the drill bit\nCAUSE: Broken or worn drill bit\nLOG: Drill bit was broken or worn out\nSTEP: Check the drill bit for any signs of damage\nCAUSE: Drill bit was damaged\nLOG: Drill bit was damaged\nSTEP: Replace the drill bit\nCAUSE: Wrong drill file"
+    },
+    {
+      "board": "BC-000106",
+      "findings": [
+        {
+          "type": "mouse_bite",
+          "conf": 0.79,
+          "location": "8 mm right of U4"
+        },
+        {
+          "type": "mouse_bite",
+          "conf": 0.74,
+          "location": "10 mm right of U4"
+        }
+      ],
+      "rule": "rework",
+      "prompt_tokens": 335,
+      "output_tokens": 52,
+      "seconds": 4.75,
+      "tokens_per_s": 10.9,
+      "valid_json": true,
+      "issues": [],
+      "advice": {
+        "summary": "Mouse bite marks on the edge of the copper trace",
+        "steps": [
+          "Measure the remaining trace width against the minimum width"
+        ],
+        "likely_cause": "Poor resist adhesion",
+        "log": "The operator will check the resist lamination and panel cleaning before rework review.",
+        "decision": "rework"
+      },
+      "raw": "SUMMARY: Mouse bite marks on the edge of the copper trace\nSTEP: Measure the remaining trace width against the minimum width\nCAUSE: Poor resist adhesion\nLOG: The operator will check the resist lamination and panel cleaning before rework review."
+    },
+    {
+      "board": "BC-000107",
+      "findings": [
+        {
+          "type": "spurious_copper",
+          "conf": 0.69,
+          "location": "board edge near J1"
+        }
+      ],
+      "rule": "rework",
+      "prompt_tokens": 299,
+      "output_tokens": 44,
+      "seconds": 3.85,
+      "tokens_per_s": 11.4,
+      "valid_json": true,
+      "issues": [],
+      "advice": {
+        "summary": "Spurious copper on board edge near J1",
+        "steps": [
+          "Check board edge near J1"
+        ],
+        "likely_cause": "Incomplete etching",
+        "log": "Check that it does not touch or come close to any conductor",
+        "decision": "rework"
+      },
+      "raw": "SUMMARY: Spurious copper on board edge near J1\nSTEP: Check board edge near J1\nCAUSE: Incomplete etching\nLOG: Check that it does not touch or come close to any conductor"
+    },
+    {
+      "board": "BC-000108",
+      "findings": [
+        {
+          "type": "short",
+          "conf": 0.91,
+          "location": "3 mm above U5"
+        },
+        {
+          "type": "missing_hole",
+          "conf": 0.84,
+          "location": "near U5"
+        },
+        {
+          "type": "spur",
+          "conf": 0.62,
+          "location": "7 mm left of U2"
+        }
+      ],
+      "rule": "reject",
+      "prompt_tokens": 523,
+      "output_tokens": 137,
+      "seconds": 10.69,
+      "tokens_per_s": 12.8,
+      "valid_json": true,
+      "issues": [],
+      "advice": {
+        "summary": "Short with 3 mm above U5",
+        "steps": [
+          "Confirm the short with a continuity test",
+          "Confirm on the drawing that a hole is required at this pad",
+          "Measure the gap from the spur to the nearest conductor"
+        ],
+        "likely_cause": "Under-etching",
+        "log": "Confirm the short with a continuity test",
+        "decision": "reject"
+      },
+      "raw": "SUMMARY: Short with 3 mm above U5\nSTEP: Confirm the short with a continuity test\nCAUSE: Under-etching\nLOG: Confirm the short with a continuity test\n\nSUMMARY: Missing hole near U5\nSTEP: Confirm on the drawing that a hole is required at this pad\nCAUSE: Drill skipped the hit\nLOG: Confirm on the drawing that a hole is required at this pad\n\nSUMMARY: Spur with 7 mm left of U2\nSTEP: Measure the gap from the spur to the nearest conductor\nCAUSE: Under-etching at that spot\nLOG: Measure the gap from the spur to the nearest conductor"
+    }
+  ]
+}

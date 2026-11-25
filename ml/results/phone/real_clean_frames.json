@@ -1,0 +1,233 @@
+[
+ {
+  "board": "real_00",
+  "items": [],
+  "quality": "blurry, hold the phone steady and re-inspect",
+  "detect_ms": 622,
+  "verdict": "pass",
+  "total_ms": 629,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_01",
+  "items": [],
+  "quality": null,
+  "detect_ms": 285,
+  "verdict": "pass",
+  "total_ms": 294,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_02",
+  "items": [],
+  "quality": null,
+  "detect_ms": 248,
+  "verdict": "pass",
+  "total_ms": 255,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_03",
+  "items": [],
+  "quality": null,
+  "detect_ms": 215,
+  "verdict": "pass",
+  "total_ms": 222,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_04",
+  "items": [],
+  "quality": null,
+  "detect_ms": 180,
+  "verdict": "pass",
+  "total_ms": 188,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_05",
+  "items": [],
+  "quality": null,
+  "detect_ms": 181,
+  "verdict": "pass",
+  "total_ms": 189,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_06",
+  "items": [],
+  "quality": null,
+  "detect_ms": 175,
+  "verdict": "pass",
+  "total_ms": 183,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_07",
+  "items": [],
+  "quality": null,
+  "detect_ms": 178,
+  "verdict": "pass",
+  "total_ms": 184,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_08",
+  "items": [],
+  "quality": null,
+  "detect_ms": 186,
+  "verdict": "pass",
+  "total_ms": 193,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_09",
+  "items": [],
+  "quality": null,
+  "detect_ms": 185,
+  "verdict": "pass",
+  "total_ms": 190,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_10",
+  "items": [],
+  "quality": null,
+  "detect_ms": 189,
+  "verdict": "pass",
+  "total_ms": 196,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_11",
+  "items": [],
+  "quality": null,
+  "detect_ms": 188,
+  "verdict": "pass",
+  "total_ms": 194,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_12",
+  "items": [],
+  "quality": null,
+  "detect_ms": 185,
+  "verdict": "pass",
+  "total_ms": 191,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_13",
+  "items": [],
+  "quality": null,
+  "detect_ms": 185,
+  "verdict": "pass",
+  "total_ms": 192,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_14",
+  "items": [],
+  "quality": null,
+  "detect_ms": 182,
+  "verdict": "pass",
+  "total_ms": 187,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_15",
+  "items": [],
+  "quality": null,
+  "detect_ms": 183,
+  "verdict": "pass",
+  "total_ms": 190,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_16",
+  "items": [],
+  "quality": null,
+  "detect_ms": 184,
+  "verdict": "pass",
+  "total_ms": 191,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_17",
+  "items": [],
+  "quality": null,
+  "detect_ms": 198,
+  "verdict": "pass",
+  "total_ms": 204,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_18",
+  "items": [],
+  "quality": null,
+  "detect_ms": 198,
+  "verdict": "pass",
+  "total_ms": 203,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_19",
+  "items": [],
+  "quality": null,
+  "detect_ms": 189,
+  "verdict": "pass",
+  "total_ms": 196,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ },
+ {
+  "board": "real_20",
+  "items": [],
+  "quality": null,
+  "detect_ms": 195,
+  "verdict": "pass",
+  "total_ms": 201,
+  "source": "rules (clean)",
+  "grounded": true,
+  "summary": "No defects found. The board can move to the next station."
+ }
+]

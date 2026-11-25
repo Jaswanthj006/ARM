@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurations revision="3">
+  <configuration counter="ARMv9_Cortex_A715_ccnt" event="0x11" />
+  <configuration counter="ARMv9_Cortex_A715_cnt0" event="0x08" /><!-- INST_RETIRED -->
+  <configuration counter="ARMv9_Cortex_A715_cnt1" event="0x03" /><!-- L1D_CACHE_REFILL -->
+  <configuration counter="ARMv9_Cortex_A715_cnt2" event="0x17" /><!-- L2D_CACHE_REFILL -->
+  <configuration counter="ARMv9_Cortex_A715_cnt3" event="0x10" /><!-- BR_MIS_PRED -->
+  <configuration counter="ARMv9_Cortex_A715_cnt4" event="0x23" /><!-- STALL_FRONTEND -->
+  <configuration counter="ARMv9_Cortex_A715_cnt5" event="0x24" /><!-- STALL_BACKEND -->
+  <configuration counter="ARMv8_Cortex_A510_ccnt" event="0x11" />
+  <configuration counter="ARMv8_Cortex_A510_cnt0" event="0x08" /><!-- INST_RETIRED -->
+  <configuration counter="ARMv8_Cortex_A510_cnt1" event="0x03" /><!-- L1D_CACHE_REFILL -->
+  <configuration counter="ARMv8_Cortex_A510_cnt2" event="0x17" /><!-- L2D_CACHE_REFILL -->
+  <configuration counter="ARMv8_Cortex_A510_cnt3" event="0x10" /><!-- BR_MIS_PRED -->
+  <configuration counter="ARMv8_Cortex_A510_cnt4" event="0x23" /><!-- STALL_FRONTEND -->
+  <configuration counter="ARMv8_Cortex_A510_cnt5" event="0x24" /><!-- STALL_BACKEND -->
+</configurations>

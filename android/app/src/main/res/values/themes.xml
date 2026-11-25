@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.BoardCheck" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">#FFFDF0</item>
+        <item name="colorPrimary">#1A1A1A</item>
+        <item name="colorAccent">#7F77DD</item>
+    </style>
+</resources>
