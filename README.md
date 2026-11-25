@@ -21,65 +21,6 @@ A laptop only shows the operator website.
 
 ![BoardCheck operator website: a board inspected on the phone, defects listed with Llama's fix steps and live Arm CPU numbers](docs/images/website_inspect.png)
 
-## How it works
-
-```mermaid
-flowchart TD
-    A(["📷 Photo of the board"]):::input --> B(["🔍 Board check · is there a PCB? · 130 ms"]):::gate
-    B -- "no (score < 0.70)" --> NB["⛔ NO BOARD"]:::stop
-    B -- "yes" --> Q["📏 Photo quality · blur, light, glare"]:::step
-    Q --> C["🧠 YOLO11n defect detection · ExecuTorch FP16 · 130 ms per tile"]:::ai
-    C --> G["🟡 Golden board · hide design features"]:::step
-    G --> R{"Worst defect?"}:::rule
-    R -- "critical" --> RJ["🔴 REJECT"]:::reject
-    R -- "repairable" --> RW["🟠 REWORK"]:::rework
-    R -- "none" --> PS["🟢 PASS"]:::pass
-    RJ --> L["🦙 Llama 3.2 1B · ExecuTorch 8da4w · fix steps + cause"]:::llm
-    RW --> L
-    L --> W[["🖥️ Operator website · advice, Arm stats, Pareto, tamper-proof log"]]:::web
-    PS --> W
-    NB --> W
-
-    classDef input fill:#E8F1FB,stroke:#1F4E8C,color:#0B2545
-    classDef gate fill:#EDE4FF,stroke:#5B3FA8,color:#2B1A47
-    classDef step fill:#F3F1EA,stroke:#8A8678,color:#1A1A1A
-    classDef ai fill:#D9F2E6,stroke:#0F6E56,color:#06392C
-    classDef llm fill:#FFF0D6,stroke:#C77700,color:#4A2C00
-    classDef rule fill:#FFFFFF,stroke:#1A1A1A,color:#1A1A1A
-    classDef pass fill:#1D9E75,stroke:#0F6E56,color:#FFFFFF
-    classDef rework fill:#EF9F27,stroke:#B26B00,color:#FFFFFF
-    classDef reject fill:#E8603C,stroke:#A32D2D,color:#FFFFFF
-    classDef stop fill:#FCEBEB,stroke:#A32D2D,color:#A32D2D
-    classDef web fill:#0B4D40,stroke:#0B4D40,color:#FFFFFF
-```
-
-**Where each part runs**
-
-```mermaid
-flowchart LR
-    subgraph PHONE["📱 Phone · Arm CPU only · ExecuTorch + XNNPACK · offline"]
-        direction TB
-        CAM["📷 Camera"]:::input --> GATE["🔍 Board check<br/>pcb_gate_v5.pte"]:::gate
-        GATE --> YOLO["🧠 YOLO11n v3<br/>pcb_yolo11n_v3_fp16.pte"]:::ai
-        YOLO --> RULES["⚖️ Rules + golden board"]:::rule
-        RULES --> LLAMA["🦙 Llama 3.2 1B<br/>llama1b_8da4w.pte"]:::llm
-    end
-    subgraph LAPTOP["💻 Laptop · no AI"]
-        direction TB
-        BR["🔁 server/bridge.py<br/>WebSocket relay"]:::step --> WEB["🖥️ Operator website"]:::web
-    end
-    PHONE == "results + advice · USB / Wi-Fi" ==> LAPTOP
-    LAPTOP -. "inspect · thresholds · golden board" .-> PHONE
-
-    classDef input fill:#E8F1FB,stroke:#1F4E8C,color:#0B2545
-    classDef gate fill:#EDE4FF,stroke:#5B3FA8,color:#2B1A47
-    classDef ai fill:#D9F2E6,stroke:#0F6E56,color:#06392C
-    classDef llm fill:#FFF0D6,stroke:#C77700,color:#4A2C00
-    classDef rule fill:#FFFFFF,stroke:#1A1A1A,color:#1A1A1A
-    classDef step fill:#F3F1EA,stroke:#8A8678,color:#1A1A1A
-    classDef web fill:#0B4D40,stroke:#0B4D40,color:#FFFFFF
-```
-
 ## Screens
 
 <table>
