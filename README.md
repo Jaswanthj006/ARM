@@ -15,6 +15,12 @@ A phone on a stand checks bare printed circuit boards. **YOLO11n finds the defec
 and Llama 3.2 1B explains how to fix them.** Everything runs on the phone's Arm CPU with **ExecuTorch**. No cloud and no GPU.
 A laptop only shows the operator website.
 
+| ⏱️ Verdict | 🎯 Real-board defects | 🚫 Not a board | 🦙 Llama on CPU | 📴 Cloud |
+|:---:|:---:|:---:|:---:|:---:|
+| **~2 s** per board | **P 0.86 · R 0.77** (DefectDet, held out) | **45 / 45** rooms & desks rejected | **9–11 tok/s** | **none**, fully offline |
+
+![BoardCheck operator website: a board inspected on the phone, defects listed with Llama's fix steps and live Arm CPU numbers](docs/images/website_inspect.png)
+
 ## How it works
 
 ```mermaid
@@ -74,6 +80,19 @@ flowchart LR
     classDef web fill:#0B4D40,stroke:#0B4D40,color:#FFFFFF
 ```
 
+## Screens
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/website_no_board.png" alt="A photo of a room: the board check scores 27 % and BoardCheck answers NO BOARD instead of PASS"></td>
+<td width="50%"><img src="docs/images/website_log.png" alt="Log page: Pareto chart of defect types, tamper-proof log badge and the list of inspected boards"></td>
+</tr>
+<tr>
+<td><b>Not a board:</b> a room photo scores 27 % on the board check and is answered with NO BOARD, never PASS.</td>
+<td><b>Log:</b> Pareto chart of defect types, a SHA-256 hash-chained log ("Log intact"), CSV export.</td>
+</tr>
+</table>
+
 ## What it does
 
 | | |
@@ -91,6 +110,8 @@ flowchart LR
 - **ExecuTorch runtime patch** (`android/executorch_android/boardcheck-threads.patch`, rebuilt `libexecutorch.so`). On a chip with only 2 big cores, the stock runtime left Llama one thread. The patch lets the app set the thread count. The app also keeps a **prefix KV cache**: the fixed system prompt is prefilled once, and each board only prefills its own findings.
 - **Thread counts measured on the phone** (`ml/results/phone/yolo_bench.json`, `llama_threads*.json`): 2 threads is best for this 2 + 6 core chip. For example, the FP32 YOLO takes 192 ms/tile with 2 threads and 313 ms/tile with 6.
 - **Arm Performance Studio / Streamline profile** ([`profiling/FINDINGS.md`](profiling/FINDINGS.md)). The app labels every stage in Streamline's timeline through Arm's annotation library (`android/native/annotate`). Findings: 27–42 % of inference cycles ran on the A510 cores (IPC ≈ 0.7–0.9 vs 2.3–2.9 on the A715). Llama decode is memory-bound (42 % back-end stalls). Thermal throttling is the biggest factor on this phone. A big-core pinning option (`Affinity.kt`) is built in, and its benefit still has to be measured on a cool phone.
+
+![Timeline of one inspection from the Arm Streamline capture: board check, 16 YOLO tiles, Llama prefill and decode, with the share of cycles on the Cortex-A715 cores](docs/images/streamline_timeline.png)
 
 ## Results
 
@@ -165,9 +186,18 @@ adb push ml/models/pcb_yolo11n_v3_fp16.pte ml/models/pcb_gate_v5.pte /data/local
 adb shell run-as com.boardcheck.app mkdir -p files/models
 adb shell run-as com.boardcheck.app cp /data/local/tmp/pcb_yolo11n_v3_fp16.pte /data/local/tmp/pcb_gate_v5.pte files/models/
 ```
-Llama: export Llama 3.2 1B Instruct with ExecuTorch's LLM export (XNNPACK, 8da4w, KV cache), then copy
-`llama1b_8da4w.pte` and `tokenizer.json` to `files/models/` the same way. The weights are not in this repository
-(Llama 3.2 Community License; the file is about 1 GB).
+**Llama** (not in this repository: Llama 3.2 Community License, and the file is about 1 GB). Accept the licence on
+Hugging Face, then export it with optimum-executorch. We used optimum-executorch 1.1.0 with ExecuTorch 1.6.0. These options
+match our model; the log of our export is `ml/llm/export_8da4w.log`.
+```bash
+pip install executorch==1.6.0 optimum-executorch==1.1.0
+optimum-cli export executorch --model meta-llama/Llama-3.2-1B-Instruct --task text-generation \
+  --recipe xnnpack --use_custom_sdpa --use_custom_kv_cache --qlinear 8da4w --output_dir ml/llm/pte_8da4w
+adb push ml/llm/pte_8da4w/model.pte /data/local/tmp/llama1b_8da4w.pte
+adb shell run-as com.boardcheck.app cp /data/local/tmp/llama1b_8da4w.pte files/models/
+```
+Copy the model's `tokenizer.json` to `files/models/` the same way. Linear layers are 8da4w (8-bit dynamic activations,
+4-bit weights) and the embeddings stay unquantized, which gives a ~0.96 GB `.pte`.
 
 Connect over USB with `adb reverse tcp:8765 tcp:8765` and **Connect → USB link** in the app, or scan the QR code
 shown on the website's Settings page.
